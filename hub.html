@@ -36,19 +36,10 @@
 .hub-hint-sep{width:1px;height:16px;background:var(--gold-dim);opacity:0.4;}
 .hub-mode-label, .hub-cards, .hub-card { opacity: 1; }
 
-/* GLOBAL VISIBILITY FALLBACK — prevents GSAP from hiding elements */
-.hub-card, .hub-mode-label, .hub-bottom-hint,
-.skills-char-area, .skills-panel, .skills-category,
-.hobby-frame, .hobbies-header,
-.project-card, .projects-list-header, .detail-content.visible,
-.cert-card, .certs-header-row, .certs-footer,
-.contact-item, .contact-header, .contact-char-wrap,
-.photo-section, .cards-section {
-  opacity: 1 !important;
-}
 
 
-/* Z-INDEX FIX — forces content above bg-canvas */
+
+
 body > *:not(#bg-canvas):not(.scanlines):not(.cursor):not(.cursor-ring) {
   position: relative;
   z-index: 2;

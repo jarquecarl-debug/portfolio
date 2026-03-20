@@ -468,7 +468,10 @@ function runLoadingSequence() {
     if (progress >= 100) {
       clearInterval(interval);
       setTimeout(() => {
-        
+        const ls = document.getElementById('loading-screen');
+        ls.style.transition = 'opacity 0.8s ease';
+        ls.style.opacity = '0';
+        setTimeout(() => { ls.style.display = 'none'; }, 800);
       }, 600);
     }
   }, 120);
