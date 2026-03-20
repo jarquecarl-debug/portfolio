@@ -27,6 +27,7 @@
   padding: 80px 0 60px 60px;
   gap: 12px;
   position: relative;
+  z-index: 20;
 }
 
 .contact-header { margin-bottom: 16px; }
@@ -279,6 +280,25 @@
 .contact-item, .contact-header, .contact-char-wrap,
 .photo-section, .cards-section {
   opacity: 1 !important;
+}
+
+
+/* Z-INDEX FIX — forces content above bg-canvas */
+body > *:not(#bg-canvas):not(.scanlines):not(.cursor):not(.cursor-ring) {
+  position: relative;
+  z-index: 2;
+}
+.hub-page, .contact-page, .skills-page, .hobbies-page,
+.projects-page, .certs-page, .about-page, .cards-section,
+.contact-left, .contact-right, .hub-cards, .hub-mode-label,
+.hub-card, .contact-item, .contact-header,
+.skills-char-area, .skills-panel,
+.hobby-frame, .hobbies-header, .frames-gallery,
+.projects-list, .project-detail,
+.certs-grid, .certs-header-row, .certs-footer,
+.photo-section {
+  position: relative;
+  z-index: 20;
 }
 
 </style>

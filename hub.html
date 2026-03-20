@@ -8,11 +8,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 <style>
-.hub-page{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:48px;position:relative;}
+.hub-page{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:48px;position:relative;z-index:2;}
 .hub-char{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);opacity:0.06;pointer-events:none;width:600px;height:500px;}
-.hub-mode-label{font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:var(--text-dim);letter-spacing:6px;text-transform:uppercase;text-align:center;position:relative;z-index:2;}
+.hub-mode-label{font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:var(--text-dim);letter-spacing:6px;text-transform:uppercase;text-align:center;position:relative;z-index:10;}
 .hub-mode-label::before,.hub-mode-label::after{content:'——';color:var(--gold-dim);margin:0 12px;}
-.hub-cards{display:flex;gap:28px;position:relative;z-index:2;}
+.hub-cards{display:flex;gap:28px;position:relative;z-index:10;}
 .hub-card{width:300px;border:1px solid var(--border);background:rgba(6,9,18,0.8);padding:36px 32px;cursor:pointer;transition:all 0.35s cubic-bezier(0.25,0.46,0.45,0.94);position:relative;overflow:hidden;text-decoration:none;display:block;clip-path:polygon(0 0,calc(100% - 20px) 0,100% 20px,100% 100%,20px 100%,0 calc(100% - 20px));}
 .hub-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,168,76,0.06) 0%,transparent 60%);opacity:0;transition:opacity 0.3s;}
 .hub-card:hover::before{opacity:1;}
@@ -45,6 +45,25 @@
 .contact-item, .contact-header, .contact-char-wrap,
 .photo-section, .cards-section {
   opacity: 1 !important;
+}
+
+
+/* Z-INDEX FIX — forces content above bg-canvas */
+body > *:not(#bg-canvas):not(.scanlines):not(.cursor):not(.cursor-ring) {
+  position: relative;
+  z-index: 2;
+}
+.hub-page, .contact-page, .skills-page, .hobbies-page,
+.projects-page, .certs-page, .about-page, .cards-section,
+.contact-left, .contact-right, .hub-cards, .hub-mode-label,
+.hub-card, .contact-item, .contact-header,
+.skills-char-area, .skills-panel,
+.hobby-frame, .hobbies-header, .frames-gallery,
+.projects-list, .project-detail,
+.certs-grid, .certs-header-row, .certs-footer,
+.photo-section {
+  position: relative;
+  z-index: 20;
 }
 
 </style>
