@@ -436,13 +436,12 @@ function revealCard(index) {
   overlay.style.display = 'flex';
   holoCubeActive = true;
   drawHoloCube();
-  gsap.fromTo(overlay, { opacity: 0 }, { opacity: 1, duration: 0.3 });
+  
 }
 
 function closeHologram() {
   holoCubeActive = false;
-  gsap.to('#hologram-overlay', { opacity: 0, duration: 0.2, onComplete: () => {
-    document.getElementById('hologram-overlay').style.display = 'none';
+  
   }});
 }
 

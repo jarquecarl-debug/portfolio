@@ -468,7 +468,7 @@ function runLoadingSequence() {
     if (progress >= 100) {
       clearInterval(interval);
       setTimeout(() => {
-        gsap.to('#loading-screen', { opacity: 0, duration: 0.8, onComplete: () => document.getElementById('loading-screen').style.display = 'none' });
+        
       }, 600);
     }
   }, 120);
