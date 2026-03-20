@@ -7,7 +7,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <link rel="stylesheet" href="css/style.css">
 <style>
 .contact-page {
@@ -594,10 +593,10 @@ function activateContact(index) {
     wrap.classList.add('visible');
     cubeActive = true;
     drawContactCube();
-    gsap.fromTo(wrap, { scale: 0.5, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.4, ease: 'back.out(1.4)' });
+    
   } else {
     // Already showing — just update content with a flash
-    gsap.fromTo('#cube-data-panel', { opacity: 0.3 }, { opacity: 1, duration: 0.3 });
+    
   }
 
   hint.classList.add('hidden');
@@ -606,9 +605,6 @@ function activateContact(index) {
 
 // Entrance animations
 window.addEventListener('load', () => {
-  /* gsap removed: .contact-header */;
-  /* gsap removed: .contact-item */;
-  /* gsap removed: .contact-char-wrap */;
 });
 </script>
 </body>

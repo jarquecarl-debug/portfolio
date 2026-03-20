@@ -6,7 +6,6 @@
 <title>Certifications — Carl Christian Jarque</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <link rel="stylesheet" href="css/style.css">
 <style>
 .certs-page {
@@ -515,7 +514,6 @@ function renderCerts() {
   });
 
   // Entrance animation
-  /* gsap removed: .cert-card */;
 }
 
 function viewCert(title, url) {
@@ -525,7 +523,7 @@ function viewCert(title, url) {
   document.getElementById('cert-viewer-title').textContent = title;
   imgWrap.innerHTML = `<img src="${url}" alt="${title}" style="max-width:100%;max-height:100%;object-fit:contain;">`;
   overlay.style.display = 'flex';
-  gsap.fromTo(overlay, { opacity: 0 }, { opacity: 1, duration: 0.3 });
+  
 }
 
 function closeCertViewer() {
@@ -540,8 +538,6 @@ document.addEventListener('keydown', e => {
 
 window.addEventListener('load', () => {
   renderCerts();
-  /* gsap removed: .certs-header-row */;
-  /* gsap removed: .certs-footer */;
 });
 </script>
 </body>

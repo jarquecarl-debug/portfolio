@@ -6,7 +6,6 @@
 <title>Projects — Carl Christian Jarque</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <link rel="stylesheet" href="css/style.css">
 <style>
 .projects-page {
@@ -547,7 +546,7 @@ function showProject(index) {
   if (detail) {
     detail.style.display = 'flex';
     detail.classList.add('visible');
-    gsap.fromTo(detail, { opacity: 0, x: 20 }, { opacity: 1, x: 0, duration: 0.4 });
+    
   }
   activeProject = index;
 }
@@ -556,8 +555,6 @@ window.addEventListener('load', () => {
   // Show first project detail
   showProject(0);
   // Entrance animations
-  /* gsap removed: .projects-list-header */;
-  /* gsap removed: .project-card */;
 });
 </script>
 </body>

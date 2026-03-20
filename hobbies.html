@@ -6,7 +6,6 @@
 <title>Gallery of Possibilities — Carl Christian Jarque</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <link rel="stylesheet" href="css/style.css">
 <style>
 .hobbies-page {
@@ -528,7 +527,7 @@ function openCarousel(index) {
 
   document.getElementById('carousel-title').textContent = hobby.name.toUpperCase();
   overlay.style.display = 'flex';
-  gsap.fromTo(overlay, { opacity: 0 }, { opacity: 1, duration: 0.3 });
+  
 
   renderCarousel();
 }
@@ -602,8 +601,6 @@ document.addEventListener('keydown', e => {
 
 // Entrance animations
 window.addEventListener('load', () => {
-  /* gsap removed: .hobbies-header */;
-  /* gsap removed: .hobby-frame */;
 });
 </script>
 </body>

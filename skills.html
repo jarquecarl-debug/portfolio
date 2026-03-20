@@ -6,7 +6,6 @@
 <title>Abilities — Carl Christian Jarque</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <link rel="stylesheet" href="css/style.css">
 <style>
 .skills-page {
@@ -413,15 +412,12 @@
 <script>
 window.addEventListener('load', () => {
   // Entrance animations
-  /* gsap removed: .skills-char-area */;
-  /* gsap removed: .skills-header */;
-  /* gsap removed: .skills-category */;
 
   // Animate skill bars on load
   setTimeout(() => {
     document.querySelectorAll('.skill-bar-fill').forEach(bar => {
       const target = bar.getAttribute('data-width');
-      gsap.to(bar, { width: target + '%', duration: 1.2, ease: 'power2.out', delay: Math.random() * 0.3 });
+      
     });
   }, 600);
 });
