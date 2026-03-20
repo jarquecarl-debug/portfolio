@@ -335,6 +335,7 @@ window.addEventListener('load', () => {
   animateBg();
   initCursor();
   initAriaSphere('aria-canvas');
-  // Reveal page after fonts and resources are ready
-  document.body.style.opacity = '1';
+  // Reveal page content after fonts and resources are ready
+  const page = document.querySelector('.page');
+  if (page) page.style.opacity = '1';
 });

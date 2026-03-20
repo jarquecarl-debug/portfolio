@@ -27,6 +27,10 @@ html, body {
   color: var(--blue-white);
   font-family: 'Rajdhani', sans-serif;
   cursor: none;
+}
+
+/* Hide page content until fonts load — loading screen is outside .page so stays visible */
+.page {
   opacity: 0;
   transition: opacity 0.4s ease;
 }
