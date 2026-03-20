@@ -62,13 +62,42 @@ html, body {
   position: fixed;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  z-index: -1;
+  z-index: 1;
   pointer-events: none;
 }
 
 /* ============================================
-   PAGE WRAPPER
+   UNIVERSAL CONTENT LAYER
+   Forces ALL page content above the canvas (z-index:1)
    ============================================ */
+.page,
+.hub-page, .contact-page, .skills-page,
+.hobbies-page, .projects-page, .certs-page,
+.about-page, .cards-section,
+.nav-breadcrumb, .floating-nav, .back-btn,
+.scanlines, .corner-deco,
+#aria-panel, #admin-modal, #loading-screen,
+#hologram-overlay, #carousel-overlay,
+#cert-viewer, #cube-hologram-wrap {
+  position: relative;
+  z-index: 10;
+}
+
+/* Fixed elements need z-index too */
+.nav-breadcrumb  { z-index: 1000; }
+.floating-nav    { z-index: 1000; }
+.back-btn        { z-index: 1000; }
+.corner-deco     { z-index: 6;    }
+.scanlines       { z-index: 5;    }
+#loading-screen  { z-index: 9000; }
+#aria-panel      { z-index: 500;  }
+#admin-modal     { z-index: 900;  }
+#hologram-overlay,
+#carousel-overlay,
+#cert-viewer     { z-index: 800;  }
+.cards-section   { z-index: 200;  }
+.cursor          { z-index: 9999; }
+.cursor-ring     { z-index: 9998; }
 .page {
   position: fixed;
   top: 0; left: 0;
