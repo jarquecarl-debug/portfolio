@@ -35,6 +35,7 @@
 .hub-hint-item{display:flex;align-items:center;gap:8px;font-family:'Share Tech Mono',monospace;font-size:0.55rem;color:var(--text-dim);letter-spacing:2px;}
 .hub-hint-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);animation:pulse-green 2s infinite;}
 .hub-hint-sep{width:1px;height:16px;background:var(--gold-dim);opacity:0.4;}
+.hub-mode-label, .hub-cards, .hub-card { opacity: 1; }
 </style>
 </head>
 <body>
@@ -128,9 +129,9 @@
 <script src="js/main.js"></script>
 <script>
 window.addEventListener('load', () => {
-  gsap.from('.hub-mode-label', { opacity: 0, y: -20, duration: 0.5, delay: 0.2 });
-  gsap.from('.hub-card', { opacity: 0, y: 40, duration: 0.6, stagger: 0.15, delay: 0.4 });
-  gsap.from('.hub-bottom-hint', { opacity: 0, duration: 0.5, delay: 0.9 });
+  gsap.fromTo('.hub-mode-label', { opacity: 0, y: -20 }, { opacity: 1, y: 0, duration: 0.5, delay: 0.2 });
+  gsap.fromTo('.hub-card', { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.6, stagger: 0.15, delay: 0.4 });
+  gsap.fromTo('.hub-bottom-hint', { opacity: 0 }, { opacity: 0.4, duration: 0.5, delay: 0.9 });
 });
 </script>
 </body>
