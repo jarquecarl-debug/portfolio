@@ -83,8 +83,6 @@ function drawConnections() {
 
 function animateBg() {
   bgCtx.clearRect(0, 0, bgWidth, bgHeight);
-  bgCtx.fillStyle = 'rgba(6,9,18,0.92)';
-  bgCtx.fillRect(0, 0, bgWidth, bgHeight);
   drawConnections();
   particles.forEach(p => { p.update(); p.draw(); });
   requestAnimationFrame(animateBg);
@@ -337,4 +335,6 @@ window.addEventListener('load', () => {
   animateBg();
   initCursor();
   initAriaSphere('aria-canvas');
+  // Reveal page after fonts and resources are ready
+  document.body.style.opacity = '1';
 });
