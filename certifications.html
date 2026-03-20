@@ -338,6 +338,18 @@
   color: var(--text-dim);
   letter-spacing: 3px;
 }
+
+/* GLOBAL VISIBILITY FALLBACK — prevents GSAP from hiding elements */
+.hub-card, .hub-mode-label, .hub-bottom-hint,
+.skills-char-area, .skills-panel, .skills-category,
+.hobby-frame, .hobbies-header,
+.project-card, .projects-list-header, .detail-content.visible,
+.cert-card, .certs-header-row, .certs-footer,
+.contact-item, .contact-header, .contact-char-wrap,
+.photo-section, .cards-section {
+  opacity: 1 !important;
+}
+
 </style>
 </head>
 <body>
@@ -503,7 +515,7 @@ function renderCerts() {
   });
 
   // Entrance animation
-  gsap.from('.cert-card', { opacity: 0, y: 20, duration: 0.4, stagger: 0.08, delay: 0.3 });
+  /* gsap removed: .cert-card */;
 }
 
 function viewCert(title, url) {
@@ -528,8 +540,8 @@ document.addEventListener('keydown', e => {
 
 window.addEventListener('load', () => {
   renderCerts();
-  gsap.from('.certs-header-row', { opacity: 0, y: -20, duration: 0.5, delay: 0.2 });
-  gsap.from('.certs-footer', { opacity: 0, y: 20, duration: 0.5, delay: 0.4 });
+  /* gsap removed: .certs-header-row */;
+  /* gsap removed: .certs-footer */;
 });
 </script>
 </body>

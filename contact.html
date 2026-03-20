@@ -270,6 +270,18 @@
   color: var(--text-dim);
   letter-spacing: 3px;
 }
+
+/* GLOBAL VISIBILITY FALLBACK — prevents GSAP from hiding elements */
+.hub-card, .hub-mode-label, .hub-bottom-hint,
+.skills-char-area, .skills-panel, .skills-category,
+.hobby-frame, .hobbies-header,
+.project-card, .projects-list-header, .detail-content.visible,
+.cert-card, .certs-header-row, .certs-footer,
+.contact-item, .contact-header, .contact-char-wrap,
+.photo-section, .cards-section {
+  opacity: 1 !important;
+}
+
 </style>
 </head>
 <body>
@@ -594,9 +606,9 @@ function activateContact(index) {
 
 // Entrance animations
 window.addEventListener('load', () => {
-  gsap.from('.contact-header', { opacity: 0, x: -20, duration: 0.5, delay: 0.2 });
-  gsap.from('.contact-item', { opacity: 0, x: -30, duration: 0.4, stagger: 0.1, delay: 0.3 });
-  gsap.from('.contact-char-wrap', { opacity: 0, x: 30, duration: 0.7, delay: 0.2 });
+  /* gsap removed: .contact-header */;
+  /* gsap removed: .contact-item */;
+  /* gsap removed: .contact-char-wrap */;
 });
 </script>
 </body>

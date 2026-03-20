@@ -312,6 +312,18 @@
 }
 .detail-github-btn:hover { border-color: var(--gold); color: var(--gold); }
 .detail-github-btn svg { width: 16px; height: 16px; fill: currentColor; }
+
+/* GLOBAL VISIBILITY FALLBACK — prevents GSAP from hiding elements */
+.hub-card, .hub-mode-label, .hub-bottom-hint,
+.skills-char-area, .skills-panel, .skills-category,
+.hobby-frame, .hobbies-header,
+.project-card, .projects-list-header, .detail-content.visible,
+.cert-card, .certs-header-row, .certs-footer,
+.contact-item, .contact-header, .contact-char-wrap,
+.photo-section, .cards-section {
+  opacity: 1 !important;
+}
+
 </style>
 </head>
 <body>
@@ -544,8 +556,8 @@ window.addEventListener('load', () => {
   // Show first project detail
   showProject(0);
   // Entrance animations
-  gsap.from('.projects-list-header', { opacity: 0, x: -20, duration: 0.5, delay: 0.2 });
-  gsap.from('.project-card', { opacity: 0, x: -20, duration: 0.4, stagger: 0.1, delay: 0.3 });
+  /* gsap removed: .projects-list-header */;
+  /* gsap removed: .project-card */;
 });
 </script>
 </body>

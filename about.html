@@ -208,6 +208,18 @@
   transition: opacity 0.2s;
 }
 .holo-close:hover { opacity: 1; }
+
+/* GLOBAL VISIBILITY FALLBACK — prevents GSAP from hiding elements */
+.hub-card, .hub-mode-label, .hub-bottom-hint,
+.skills-char-area, .skills-panel, .skills-category,
+.hobby-frame, .hobbies-header,
+.project-card, .projects-list-header, .detail-content.visible,
+.cert-card, .certs-header-row, .certs-footer,
+.contact-item, .contact-header, .contact-char-wrap,
+.photo-section, .cards-section {
+  opacity: 1 !important;
+}
+
 </style>
 </head>
 <body>
@@ -413,8 +425,8 @@ function closeHologram() {
 
 // Page entrance
 window.addEventListener('load', () => {
-  gsap.from('.photo-section', { opacity: 0, y: -20, duration: 0.6, delay: 0.2 });
-  gsap.from('.cards-section', { opacity: 0, y: 30, duration: 0.6, delay: 0.4 });
+  /* gsap removed: .photo-section */;
+  /* gsap removed: .cards-section */;
 });
 </script>
 </body>

@@ -183,6 +183,18 @@
   background: linear-gradient(to right, transparent, var(--border), transparent);
   margin: 4px 0;
 }
+
+/* GLOBAL VISIBILITY FALLBACK — prevents GSAP from hiding elements */
+.hub-card, .hub-mode-label, .hub-bottom-hint,
+.skills-char-area, .skills-panel, .skills-category,
+.hobby-frame, .hobbies-header,
+.project-card, .projects-list-header, .detail-content.visible,
+.cert-card, .certs-header-row, .certs-footer,
+.contact-item, .contact-header, .contact-char-wrap,
+.photo-section, .cards-section {
+  opacity: 1 !important;
+}
+
 </style>
 </head>
 <body>
@@ -401,9 +413,9 @@
 <script>
 window.addEventListener('load', () => {
   // Entrance animations
-  gsap.from('.skills-char-area', { opacity: 0, x: -30, duration: 0.7, delay: 0.2 });
-  gsap.from('.skills-header', { opacity: 0, y: -20, duration: 0.5, delay: 0.3 });
-  gsap.from('.skills-category', { opacity: 0, x: 30, duration: 0.5, stagger: 0.12, delay: 0.5 });
+  /* gsap removed: .skills-char-area */;
+  /* gsap removed: .skills-header */;
+  /* gsap removed: .skills-category */;
 
   // Animate skill bars on load
   setTimeout(() => {
