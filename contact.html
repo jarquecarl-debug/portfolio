@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Get in Touch — Carl Christian Jarque</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=optional" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <link rel="stylesheet" href="css/style.css">
 <style>
@@ -271,19 +272,10 @@
   letter-spacing: 3px;
 }
 
-/* GLOBAL VISIBILITY FALLBACK — prevents GSAP from hiding elements */
-.hub-card, .hub-mode-label, .hub-bottom-hint,
-.skills-char-area, .skills-panel, .skills-category,
-.hobby-frame, .hobbies-header,
-.project-card, .projects-list-header, .detail-content.visible,
-.cert-card, .certs-header-row, .certs-footer,
-.contact-item, .contact-header, .contact-char-wrap,
-.photo-section, .cards-section {
-  opacity: 1 !important;
-}
 
 
-/* Z-INDEX FIX — forces content above bg-canvas */
+
+
 body > *:not(#bg-canvas):not(.scanlines):not(.cursor):not(.cursor-ring) {
   position: relative;
   z-index: 2;

@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Carl Christian Jarque — Portfolio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=optional" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <link rel="stylesheet" href="css/style.css">
@@ -468,7 +469,10 @@ function runLoadingSequence() {
     if (progress >= 100) {
       clearInterval(interval);
       setTimeout(() => {
-        
+        const ls = document.getElementById('loading-screen');
+        ls.style.transition = 'opacity 0.8s ease';
+        ls.style.opacity = '0';
+        setTimeout(() => { ls.style.display = 'none'; }, 800);
       }, 600);
     }
   }, 120);
