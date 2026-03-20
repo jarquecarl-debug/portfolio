@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin CMS — Carl's Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<style>
+/* ============================================
+   ADMIN CMS LAYOUT
+   ============================================ */
+* { box-sizing: border-box; }
+body { overflow: auto; cursor: default; }
+.cursor, .cursor-ring { display: none; }
+.scanlines { opacity: 0.3; }
+#bg-canvas { opacity: 0.4; }
+
+.admin-wrap {
+  min-height: 100vh;
+  display: flex;
+  position: relative;
+  z-index: 10;
+}
+
+/* SIDEBAR */
+.admin-sidebar {
+  width: 240px;
+  flex-shrink: 0;
+  background: rgba(6,9,18,0.97);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0; left: 0;
+  height: 100vh;
+  z-index: 100;
+  padding: 0 0 20px;
+}
+.admin-sidebar-header {
+  padding: 24px 20px 20px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 12px;
+}
+.admin-sidebar-title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.85rem;
+  color: var(--gold);
+  letter-spacing: 2px;
+  margin-bottom: 4px;
+}
+.admin-sidebar-sub {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.55rem;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+}
+.admin-online {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+}
+.admin-online-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: #00ff88;
+  box-shadow: 0 0 6px #00ff88;
+  animation: pulse-green 2s infinite;
+}
+.admin-online-text {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.5rem;
+  color: #00ff88;
+  letter-spacing: 2px;
+}
+
+.admin-nav { flex: 1; overflow-y: auto; padding: 0 12px; }
+.admin-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: all 0.2s;
+  margin-bottom: 2px;
+  border: 1px solid transparent;
+}
+.admin-nav-item:hover { background: rgba(201,168,76,0.06); border-color: var(--border); }
+.admin-nav-item.active { background: rgba(201,168,76,0.1); border-color: var(--gold-dim); }
+.admin-nav-icon { font-size: 1rem; width: 20px; text-align: center; }
+.admin-nav-label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.6rem;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+  transition: color 0.2s;
+}
+.admin-nav-item.active .admin-nav-label,
+.admin-nav-item:hover .admin-nav-label { color: var(--gold); }
+
+.admin-sidebar-footer {
+  padding: 16px 20px 0;
+  border-top: 1px solid var(--border);
+  margin-top: 8px;
+}
+.admin-exit-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-dim);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+  width: 100%;
+}
+.admin-exit-btn:hover { border-color: var(--red); color: var(--red); }
+
+/* MAIN CONTENT */
+.admin-main {
+  margin-left: 240px;
+  flex: 1;
+  padding: 32px 40px;
+  min-height: 100vh;
+}
+
+/* Section panels */
+.admin-section { display: none; }
+.admin-section.active { display: block; }
+
+.admin-section-title {
+  font-family: 'Cinzel', serif;
+  font-size: 1.3rem;
+  color: var(--gold-light);
+  margin-bottom: 6px;
+  letter-spacing: 1px;
+}
+.admin-section-desc {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  margin-bottom: 28px;
+  line-height: 1.5;
+}
+.admin-divider {
+  height: 1px;
+  background: linear-gradient(to right, var(--border), transparent);
+  margin: 24px 0;
+}
+
+/* Cards grid for items */
+.admin-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.admin-item-card {
+  border: 1px solid var(--border);
+  background: rgba(201,168,76,0.03);
+  padding: 16px;
+  position: relative;
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+}
+.admin-item-card-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--blue-white);
+  margin-bottom: 4px;
+}
+.admin-item-card-sub {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.5rem;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+}
+.admin-item-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+.admin-btn {
+  padding: 6px 14px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid;
+}
+.admin-btn-gold { border-color: var(--gold-dim); color: var(--gold); background: transparent; }
+.admin-btn-gold:hover { background: rgba(201,168,76,0.1); border-color: var(--gold); }
+.admin-btn-red { border-color: rgba(224,60,60,0.4); color: var(--red); background: transparent; }
+.admin-btn-red:hover { background: rgba(224,60,60,0.1); border-color: var(--red); }
+.admin-btn-cyan { border-color: rgba(0,217,255,0.3); color: var(--cyan); background: transparent; }
+.admin-btn-cyan:hover { background: rgba(0,217,255,0.08); border-color: var(--cyan); }
+.admin-btn-full {
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+  display: block;
+}
+
+/* Form styles */
+.admin-form { max-width: 600px; }
+.admin-form-group { margin-bottom: 18px; }
+.admin-form-label {
+  display: block;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.55rem;
+  color: var(--text-dim);
+  letter-spacing: 3px;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+.admin-input,
+.admin-textarea,
+.admin-select {
+  width: 100%;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  border-radius: 0;
+  padding: 10px 14px;
+  color: var(--blue-white);
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s;
+  -webkit-appearance: none;
+}
+.admin-input:focus,
+.admin-textarea:focus,
+.admin-select:focus { border-color: var(--gold); }
+.admin-textarea { resize: vertical; min-height: 80px; }
+.admin-select { background-color: #0a0d18; cursor: pointer; }
+.admin-select option { background: #0a0d18; }
+
+/* File upload */
+.admin-upload-area {
+  border: 1px dashed var(--border);
+  padding: 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+.admin-upload-area:hover { border-color: var(--gold); background: rgba(201,168,76,0.03); }
+.admin-upload-area input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+.admin-upload-text {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.6rem;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+}
+.admin-upload-preview {
+  width: 100%; max-height: 160px;
+  object-fit: contain;
+  margin-top: 12px;
+  display: none;
+  border: 1px solid var(--border);
+}
+
+/* Image preview grid */
+.admin-img-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 8px;
+  margin-top: 12px;
+}
+.admin-img-item {
+  position: relative;
+  aspect-ratio: 4/3;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  background: #0a0d18;
+}
+.admin-img-item img { width: 100%; height: 100%; object-fit: cover; }
+.admin-img-delete {
+  position: absolute;
+  top: 4px; right: 4px;
+  width: 20px; height: 20px;
+  background: rgba(224,60,60,0.8);
+  border: none;
+  color: #fff;
+  font-size: 0.7rem;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s;
+}
+.admin-img-delete:hover { background: var(--red); }
+
+/* Toast notification */
+#admin-toast {
+  position: fixed;
+  bottom: 30px; right: 30px;
+  padding: 12px 24px;
+  background: rgba(6,9,18,0.98);
+  border: 1px solid var(--gold);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.6rem;
+  color: var(--gold);
+  letter-spacing: 2px;
+  z-index: 9999;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s;
+  pointer-events: none;
+}
+#admin-toast.show { opacity: 1; transform: translateY(0); }
+#admin-toast.error { border-color: var(--red); color: var(--red); }
+#admin-toast.success { border-color: #00ff88; color: #00ff88; }
+
+/* Profile photo preview */
+.admin-photo-preview {
+  width: 120px; height: 120px;
+  border-radius: 50%;
+  border: 2px solid var(--gold);
+  object-fit: cover;
+  margin-bottom: 16px;
+  display: block;
+  background: #111828;
+}
+
+/* Skills bar preview */
+.skill-preview-bar {
+  height: 3px;
+  background: rgba(255,255,255,0.06);
+  margin-top: 6px;
+  position: relative;
+}
+.skill-preview-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold-dim), var(--gold));
+  transition: width 0.3s;
+}
+
+/* Loading spinner */
+.admin-spinner {
+  display: inline-block;
+  width: 14px; height: 14px;
+  border: 2px solid var(--border);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: spin-slow 0.8s linear infinite;
+  vertical-align: middle;
+  margin-right: 6px;
+}
+</style>
+</head>
+<body>
+<div class="scanlines"></div>
+<canvas id="bg-canvas"></canvas>
+
+<!-- TOAST -->
+<div id="admin-toast"></div>
+
+<div class="admin-wrap">
+
+  <!-- SIDEBAR -->
+  <div class="admin-sidebar">
+    <div class="admin-sidebar-header">
+      <div class="admin-sidebar-title">ADMIN CMS</div>
+      <div class="admin-sidebar-sub">CARL'S PORTFOLIO</div>
+      <div class="admin-online">
+        <div class="admin-online-dot"></div>
+        <span class="admin-online-text">AUTHENTICATED</span>
+      </div>
+    </div>
+
+    <div class="admin-nav">
+      <div class="admin-nav-item active" onclick="showSection('profile')">
+        <span class="admin-nav-icon">👤</span>
+        <span class="admin-nav-label">PROFILE & PHOTO</span>
+      </div>
+      <div class="admin-nav-item" onclick="showSection('about')">
+        <span class="admin-nav-icon">🔮</span>
+        <span class="admin-nav-label">ABOUT CARDS</span>
+      </div>
+      <div class="admin-nav-item" onclick="showSection('skills')">
+        <span class="admin-nav-icon">⚡</span>
+        <span class="admin-nav-label">SKILLS</span>
+      </div>
+      <div class="admin-nav-item" onclick="showSection('hobbies')">
+        <span class="admin-nav-icon">🎨</span>
+        <span class="admin-nav-label">HOBBIES</span>
+      </div>
+      <div class="admin-nav-item" onclick="showSection('projects')">
+        <span class="admin-nav-icon">🚀</span>
+        <span class="admin-nav-label">PROJECTS</span>
+      </div>
+      <div class="admin-nav-item" onclick="showSection('certifications')">
+        <span class="admin-nav-icon">🏆</span>
+        <span class="admin-nav-label">CERTIFICATIONS</span>
+      </div>
+      <div class="admin-nav-item" onclick="showSection('contact')">
+        <span class="admin-nav-icon">📡</span>
+        <span class="admin-nav-label">CONTACT INFO</span>
+      </div>
+    </div>
+
+    <div class="admin-sidebar-footer">
+      <a href="index.html" class="admin-exit-btn">
+        ← EXIT TO PORTFOLIO
+      </a>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="admin-main">
+
+    <!-- ========== PROFILE ========== -->
+    <div class="admin-section active" id="section-profile">
+      <div class="admin-section-title">Profile & Photo</div>
+      <div class="admin-section-desc">Update your profile photo and career path titles shown on the Who Am I page.</div>
+
+      <div class="admin-form">
+        <!-- Photo -->
+        <div class="admin-form-group">
+          <label class="admin-form-label">Profile Photo</label>
+          <img id="profile-photo-preview" class="admin-photo-preview" src="" alt="Profile Photo"
+            onerror="this.src='data:image/svg+xml,<svg viewBox=&quot;0 0 100 100&quot; fill=&quot;%231a2035&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;><rect width=&quot;100&quot; height=&quot;100&quot;/></svg>'">
+          <div class="admin-upload-area">
+            <input type="file" accept="image/*" onchange="previewAndUploadPhoto(this)">
+            <div class="admin-upload-text">📷 CLICK TO UPLOAD NEW PHOTO</div>
+            <div class="admin-upload-text" style="margin-top:4px;opacity:0.5;">JPG, PNG, WEBP supported</div>
+          </div>
+        </div>
+
+        <div class="admin-divider"></div>
+
+        <!-- Career paths -->
+        <div class="admin-form-group">
+          <label class="admin-form-label">Career Path 1</label>
+          <input type="text" class="admin-input" id="career-1" value="Frontend Developer">
+        </div>
+        <div class="admin-form-group">
+          <label class="admin-form-label">Career Path 2</label>
+          <input type="text" class="admin-input" id="career-2" value="Prompt Engineer">
+        </div>
+        <div class="admin-form-group">
+          <label class="admin-form-label">Career Path 3</label>
+          <input type="text" class="admin-input" id="career-3" value="Computer Engineer">
+        </div>
+
+        <button class="admin-btn admin-btn-gold admin-btn-full" onclick="saveProfile()">SAVE PROFILE</button>
+      </div>
+    </div>
+
+    <!-- ========== ABOUT CARDS ========== -->
+    <div class="admin-section" id="section-about">
+      <div class="admin-section-title">About Me — Node Cards</div>
+      <div class="admin-section-desc">Edit the content of each node card shown on the Who Am I page.</div>
+
+      <div class="admin-form">
+        <div id="about-cards-form"></div>
+        <button class="admin-btn admin-btn-gold admin-btn-full" onclick="saveAboutCards()">SAVE CARDS</button>
+      </div>
+    </div>
+
+    <!-- ========== SKILLS ========== -->
+    <div class="admin-section" id="section-skills">
+      <div class="admin-section-title">Skills & Abilities</div>
+      <div class="admin-section-desc">Manage your technical and soft skills displayed on the Abilities page.</div>
+
+      <div id="skills-list" class="admin-cards-grid"></div>
+      <button class="admin-btn admin-btn-cyan" onclick="showAddSkillForm()" style="margin-bottom:20px;">+ ADD SKILL</button>
+
+      <div id="add-skill-form" style="display:none;" class="admin-form">
+        <div class="admin-divider"></div>
+        <div class="admin-form-group">
+          <label class="admin-form-label">Skill Name</label>
+          <input type="text" class="admin-input" id="new-skill-name" placeholder="e.g. TypeScript">
+        </div>
+        <div class="admin-form-group">
+          <label class="admin-form-label">Category</label>
+          <select class="admin-select" id="new-skill-cat">
+            <option value="frontend">Frontend Development</option>
+            <option value="languages">Programming Languages</option>
+            <option value="web">Web Technologies</option>
+            <option value="soft">Soft Skills</option>
+          </select>
+        </div>
+        <div class="admin-form-group">
+          <label class="admin-form-label">Proficiency (0–100) — leave 0 for tag-style</label>
+          <input type="number" class="admin-input" id="new-skill-level" min="0" max="100" value="75">
+          <div class="skill-preview-bar"><div class="skill-preview-fill" id="skill-level-preview" style="width:75%"></div></div>
+        </div>
+        <div style="display:flex;gap:10px;">
+          <button class="admin-btn admin-btn-gold" onclick="saveNewSkill()">SAVE SKILL</button>
+          <button class="admin-btn admin-btn-red" onclick="document.getElementById('add-skill-form').style.display='none'">CANCEL</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== HOBBIES ========== -->
+    <div class="admin-section" id="section-hobbies">
+      <div class="admin-section-title">Hobbies — Gallery Photos</div>
+      <div class="admin-section-desc">Upload photos for each hobby gallery. Photos are stored on Cloudinary.</div>
+
+      <div id="hobbies-tabs" style="display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap;"></div>
+      <div id="hobbies-content"></div>
+    </div>
+
+    <!-- ========== PROJECTS ========== -->
+    <div class="admin-section" id="section-projects">
+      <div class="admin-section-title">Projects</div>
+      <div class="admin-section-desc">Manage your project entries and upload project screenshots.</div>
+
+      <div id="projects-list" class="admin-cards-grid"></div>
+      <button class="admin-btn admin-btn-cyan" onclick="showAddProjectForm()" style="margin-bottom:20px;">+ ADD PROJECT</button>
+      <div id="add-project-form" style="display:none;" class="admin-form">
+        <div class="admin-divider"></div>
+        <div class="admin-form-group">
+          <label class="admin-form-label">Project Title</label>
+          <input type="text" class="admin-input" id="new-proj-title">
+        </div>
+        <div class="admin-form-group">
+          <label class="admin-form-label">Type / Category</label>
+          <input type="text" class="admin-input" id="new-proj-type" placeholder="e.g. Thesis · Security System">
+        </div>
+        <div class="admin-form-group">
+          <label class="admin-form-label">Year</label>
+          <input type="text" class="admin-input" id="new-proj-year" placeholder="e.g. 2025">
+        </div>
+        <div class="admin-form-group">
+          <label class="admin-form-label">Description</label>
+          <textarea class="admin-textarea" id="new-proj-desc" rows="4"></textarea>
+        </div>
+        <div class="admin-form-group">
+          <label class="admin-form-label">Tech Stack (comma-separated)</label>
+          <input type="text" class="admin-input" id="new-proj-stack" placeholder="Python, React, Firebase">
+        </div>
+        <div class="admin-form-group">
+          <label class="admin-form-label">GitHub URL</label>
+          <input type="text" class="admin-input" id="new-proj-github">
+        </div>
+        <div class="admin-form-group">
+          <label class="admin-form-label">Project Images</label>
+          <div class="admin-upload-area">
+            <input type="file" accept="image/*" multiple onchange="queueProjectImages(this)">
+            <div class="admin-upload-text">📁 CLICK TO SELECT IMAGES (MULTIPLE)</div>
+          </div>
+          <div id="new-proj-img-preview" class="admin-img-grid"></div>
+        </div>
+        <div style="display:flex;gap:10px;">
+          <button class="admin-btn admin-btn-gold" onclick="saveNewProject()">SAVE PROJECT</button>
+          <button class="admin-btn admin-btn-red" onclick="document.getElementById('add-project-form').style.display='none'">CANCEL</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== CERTIFICATIONS ========== -->
+    <div class="admin-section" id="section-certifications">
+      <div class="admin-section-title">Certifications</div>
+      <div class="admin-section-desc">Add or remove your certifications. PDF files are auto-converted to images via Cloudinary.</div>
+
+      <div id="certs-list" class="admin-cards-grid"></div>
+      <button class="admin-btn admin-btn-cyan" onclick="showAddCertForm()" style="margin-bottom:20px;">+ ADD CERTIFICATION</button>
+      <div id="add-cert-form" style="display:none;" class="admin-form">
+        <div class="admin-divider"></div>
+        <div class="admin-form-group">
+          <label class="admin-form-label">Certificate Title</label>
+          <input type="text" class="admin-input" id="new-cert-title">
+        </div>
+        <div class="admin-form-group">
+          <label class="admin-form-label">Issuing Organization</label>
+          <input type="text" class="admin-input" id="new-cert-issuer">
+        </div>
+        <div class="admin-form-group">
+          <label class="admin-form-label">Year</label>
+          <input type="text" class="admin-input" id="new-cert-year">
+        </div>
+        <div class="admin-form-group">
+          <label class="admin-form-label">Certificate File (PDF or Image)</label>
+          <div class="admin-upload-area">
+            <input type="file" accept="image/*,application/pdf" onchange="previewCertFile(this)">
+            <div class="admin-upload-text">📜 CLICK TO UPLOAD CERTIFICATE</div>
+            <div class="admin-upload-text" style="margin-top:4px;opacity:0.5;">PDF will be auto-converted to image</div>
+          </div>
+          <img id="cert-file-preview" class="admin-upload-preview">
+        </div>
+        <div style="display:flex;gap:10px;">
+          <button class="admin-btn admin-btn-gold" onclick="saveNewCert()">SAVE CERTIFICATION</button>
+          <button class="admin-btn admin-btn-red" onclick="document.getElementById('add-cert-form').style.display='none'">CANCEL</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== CONTACT ========== -->
+    <div class="admin-section" id="section-contact">
+      <div class="admin-section-title">Contact Information</div>
+      <div class="admin-section-desc">Update your contact details shown on the Get in Touch page.</div>
+
+      <div class="admin-form">
+        <div class="admin-form-group">
+          <label class="admin-form-label">GitHub Username</label>
+          <input type="text" class="admin-input" id="contact-github" value="jarquecarl-debug">
+        </div>
+        <div class="admin-form-group">
+          <label class="admin-form-label">Email Address</label>
+          <input type="email" class="admin-input" id="contact-email" value="jarquecarl@gmail.com">
+        </div>
+        <div class="admin-form-group">
+          <label class="admin-form-label">Phone Number</label>
+          <input type="text" class="admin-input" id="contact-phone" value="+63 954 545 7518">
+        </div>
+        <div class="admin-form-group">
+          <label class="admin-form-label">Facebook Profile URL or Username</label>
+          <input type="text" class="admin-input" id="contact-facebook" value="carlchristian.jarque.7">
+        </div>
+        <button class="admin-btn admin-btn-gold admin-btn-full" onclick="saveContact()">SAVE CONTACT INFO</button>
+      </div>
+    </div>
+
+  </div><!-- end admin-main -->
+</div><!-- end admin-wrap -->
+
+<script type="module">
+import {
+  db, doc, getDoc, setDoc,
+  collection, getDocs, addDoc, deleteDoc, updateDoc,
+  uploadToCloudinary
+} from './js/firebase-config.js';
+
+// ============================================
+// UTILITIES
+// ============================================
+function toast(msg, type = '') {
+  const el = document.getElementById('admin-toast');
+  el.textContent = msg;
+  el.className = `show ${type}`;
+  setTimeout(() => { el.className = ''; }, 3000);
+}
+
+function showSection(name) {
+  document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.admin-nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById(`section-${name}`).classList.add('active');
+  event.currentTarget.classList.add('active');
+  if (name === 'skills') loadSkills();
+  if (name === 'hobbies') loadHobbiesAdmin();
+  if (name === 'projects') loadProjects();
+  if (name === 'certifications') loadCerts();
+  if (name === 'contact') loadContact();
+  if (name === 'about') renderAboutForm();
+  if (name === 'profile') loadProfile();
+}
+window.showSection = showSection;
+
+// ============================================
+// BACKGROUND
+// ============================================
+const bgCanvas = document.getElementById('bg-canvas');
+const bgCtx = bgCanvas.getContext('2d');
+let bw, bh, pts = [];
+function resizeBg() { bw = bgCanvas.width = window.innerWidth; bh = bgCanvas.height = window.innerHeight; }
+function Pt() { this.x=Math.random()*bw; this.y=Math.random()*bh; this.vx=(Math.random()-.5)*.3; this.vy=(Math.random()-.5)*.3; this.gold=Math.random()>.5; }
+Pt.prototype.update=function(){ this.x+=this.vx; this.y+=this.vy; if(this.x<0)this.x=bw; if(this.x>bw)this.x=0; if(this.y<0)this.y=bh; if(this.y>bh)this.y=0; };
+function animBg() {
+  bgCtx.fillStyle='rgba(6,9,18,0.94)'; bgCtx.fillRect(0,0,bw,bh);
+  pts.forEach(p=>{ p.update(); bgCtx.beginPath(); bgCtx.arc(p.x,p.y,1.2,0,Math.PI*2); bgCtx.fillStyle=p.gold?'rgba(201,168,76,0.5)':'rgba(0,160,220,0.4)'; bgCtx.fill(); });
+  requestAnimationFrame(animBg);
+}
+resizeBg(); for(let i=0;i<60;i++)pts.push(new Pt()); animBg();
+window.addEventListener('resize',()=>{ resizeBg(); pts=[]; for(let i=0;i<60;i++)pts.push(new Pt()); });
+
+// ============================================
+// PROFILE
+// ============================================
+let pendingPhotoUrl = null;
+
+async function loadProfile() {
+  try {
+    const snap = await getDoc(doc(db, 'cms', 'profile'));
+    if (snap.exists()) {
+      const d = snap.data();
+      if (d.photoUrl) document.getElementById('profile-photo-preview').src = d.photoUrl;
+      if (d.careers) {
+        document.getElementById('career-1').value = d.careers[0] || 'Frontend Developer';
+        document.getElementById('career-2').value = d.careers[1] || 'Prompt Engineer';
+        document.getElementById('career-3').value = d.careers[2] || 'Computer Engineer';
+      }
+    }
+  } catch(e) { console.log('No profile data yet'); }
+}
+
+window.previewAndUploadPhoto = async function(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const preview = document.getElementById('profile-photo-preview');
+  preview.src = URL.createObjectURL(file);
+  toast('⏳ Uploading photo...');
+  try {
+    pendingPhotoUrl = await uploadToCloudinary(file);
+    toast('Photo uploaded! Click SAVE to confirm.', 'success');
+  } catch(e) { toast('Upload failed. Check Cloudinary settings.', 'error'); }
+};
+
+window.saveProfile = async function() {
+  const data = {
+    careers: [
+      document.getElementById('career-1').value,
+      document.getElementById('career-2').value,
+      document.getElementById('career-3').value,
+    ]
+  };
+  if (pendingPhotoUrl) data.photoUrl = pendingPhotoUrl;
+  try {
+    await setDoc(doc(db, 'cms', 'profile'), data, { merge: true });
+    toast('Profile saved!', 'success');
+    pendingPhotoUrl = null;
+  } catch(e) { toast('Save failed: ' + e.message, 'error'); }
+};
+
+// ============================================
+// ABOUT CARDS
+// ============================================
+const defaultCards = [
+  { label: 'NAME', title: 'Carl Christian Jarque', desc: 'The one behind the code, the designs, and the curiosity that drives it all.' },
+  { label: 'ORIGIN', title: 'Cavite, Philippines', desc: 'Born and raised in the Pearl of the Orient — shaped by culture, driven by ambition.' },
+  { label: 'CLASS', title: 'Computer Engineer', desc: 'Bridging hardware and software — where logic meets creativity.' },
+  { label: 'INSTITUTE', title: 'San Sebastian College Recoletos De Cavite', desc: 'Forged through years of engineering challenges, projects, and sleepless nights.' },
+  { label: 'DIRECTIVE', title: 'Create Meaningful Experiences', desc: 'To create meaningful experiences through curiosity and exploration.' },
+  { label: 'SYNC', title: 'Be Adventurous', desc: 'Every step into the unknown shapes who you become.' }
+];
+
+let aboutCards = [...defaultCards];
+
+function renderAboutForm() {
+  const form = document.getElementById('about-cards-form');
+  form.innerHTML = aboutCards.map((card, i) => `
+    <div style="margin-bottom:20px;padding:16px;border:1px solid var(--border);background:rgba(201,168,76,0.02);">
+      <div style="font-family:'Share Tech Mono',monospace;font-size:0.55rem;color:var(--gold);letter-spacing:3px;margin-bottom:12px;">NODE ${String(i+1).padStart(2,'0')} — ${card.label}</div>
+      <div class="admin-form-group">
+        <label class="admin-form-label">Title</label>
+        <input type="text" class="admin-input" id="card-title-${i}" value="${card.title}">
+      </div>
+      <div class="admin-form-group">
+        <label class="admin-form-label">Description</label>
+        <textarea class="admin-textarea" id="card-desc-${i}" rows="2">${card.desc}</textarea>
+      </div>
+    </div>
+  `).join('');
+}
+
+window.saveAboutCards = async function() {
+  const cards = aboutCards.map((card, i) => ({
+    label: card.label,
+    title: document.getElementById(`card-title-${i}`).value,
+    desc: document.getElementById(`card-desc-${i}`).value
+  }));
+  try {
+    await setDoc(doc(db, 'cms', 'about'), { cards }, { merge: true });
+    toast('About cards saved!', 'success');
+  } catch(e) { toast('Save failed: ' + e.message, 'error'); }
+};
+
+// ============================================
+// SKILLS
+// ============================================
+let skills = [];
+
+async function loadSkills() {
+  const list = document.getElementById('skills-list');
+  list.innerHTML = '<div style="color:var(--text-dim);font-family:Share Tech Mono,monospace;font-size:0.6rem;letter-spacing:2px;">LOADING...</div>';
+  try {
+    const snap = await getDocs(collection(db, 'skills'));
+    skills = [];
+    snap.forEach(d => skills.push({ id: d.id, ...d.data() }));
+    renderSkills();
+  } catch(e) { renderSkills(); }
+}
+
+function renderSkills() {
+  const list = document.getElementById('skills-list');
+  if (!skills.length) {
+    list.innerHTML = '<div style="color:var(--text-dim);font-family:Share Tech Mono,monospace;font-size:0.6rem;letter-spacing:2px;grid-column:1/-1;">NO SKILLS YET — ADD ONE BELOW</div>';
+    return;
+  }
+  list.innerHTML = skills.map(s => `
+    <div class="admin-item-card">
+      <div class="admin-item-card-title">${s.name}</div>
+      <div class="admin-item-card-sub">${s.category?.toUpperCase()} ${s.level > 0 ? '· ' + s.level + '%' : '· TAG'}</div>
+      ${s.level > 0 ? `<div class="skill-preview-bar"><div class="skill-preview-fill" style="width:${s.level}%"></div></div>` : ''}
+      <div class="admin-item-actions">
+        <button class="admin-btn admin-btn-red" onclick="deleteSkill('${s.id}')">DELETE</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+window.showAddSkillForm = function() {
+  document.getElementById('add-skill-form').style.display = 'block';
+};
+
+document.getElementById('new-skill-level')?.addEventListener('input', function() {
+  document.getElementById('skill-level-preview').style.width = this.value + '%';
+});
+
+window.saveNewSkill = async function() {
+  const name = document.getElementById('new-skill-name').value.trim();
+  const cat = document.getElementById('new-skill-cat').value;
+  const level = parseInt(document.getElementById('new-skill-level').value) || 0;
+  if (!name) { toast('Skill name required', 'error'); return; }
+  try {
+    const ref = await addDoc(collection(db, 'skills'), { name, category: cat, level });
+    skills.push({ id: ref.id, name, category: cat, level });
+    renderSkills();
+    document.getElementById('new-skill-name').value = '';
+    document.getElementById('add-skill-form').style.display = 'none';
+    toast('Skill added!', 'success');
+  } catch(e) { toast('Failed: ' + e.message, 'error'); }
+};
+
+window.deleteSkill = async function(id) {
+  if (!confirm('Delete this skill?')) return;
+  try {
+    await deleteDoc(doc(db, 'skills', id));
+    skills = skills.filter(s => s.id !== id);
+    renderSkills();
+    toast('Skill deleted', 'success');
+  } catch(e) { toast('Failed: ' + e.message, 'error'); }
+};
+
+// ============================================
+// HOBBIES
+// ============================================
+const hobbyNames = ['Baking', 'Cosplay', 'Coffee', 'Food Exploring', 'Merch Collecting'];
+let activeHobbyTab = 0;
+let hobbyData = {};
+
+async function loadHobbiesAdmin() {
+  const tabs = document.getElementById('hobbies-tabs');
+  tabs.innerHTML = hobbyNames.map((n, i) => `
+    <button class="admin-btn ${i===activeHobbyTab?'admin-btn-gold':'admin-btn-cyan'}"
+      onclick="switchHobbyTab(${i})" id="hobby-tab-${i}">${n}</button>
+  `).join('');
+
+  for (const name of hobbyNames) {
+    try {
+      const snap = await getDoc(doc(db, 'hobbies', name));
+      hobbyData[name] = snap.exists() ? (snap.data().images || []) : [];
+    } catch(e) { hobbyData[name] = []; }
+  }
+  renderHobbyContent();
+}
+
+window.switchHobbyTab = function(i) {
+  activeHobbyTab = i;
+  document.querySelectorAll('[id^="hobby-tab-"]').forEach((b, idx) => {
+    b.className = `admin-btn ${idx===i ? 'admin-btn-gold' : 'admin-btn-cyan'}`;
+  });
+  renderHobbyContent();
+};
+
+function renderHobbyContent() {
+  const name = hobbyNames[activeHobbyTab];
+  const images = hobbyData[name] || [];
+  const content = document.getElementById('hobbies-content');
+  content.innerHTML = `
+    <div style="margin-bottom:16px;">
+      <div style="font-family:'Share Tech Mono',monospace;font-size:0.55rem;color:var(--text-dim);letter-spacing:3px;margin-bottom:12px;">${images.length} PHOTO(S) — ${name.toUpperCase()}</div>
+      <div class="admin-upload-area">
+        <input type="file" accept="image/*" multiple onchange="uploadHobbyImages(this, '${name}')">
+        <div class="admin-upload-text">📸 UPLOAD PHOTOS FOR ${name.toUpperCase()}</div>
+      </div>
+    </div>
+    <div class="admin-img-grid" id="hobby-img-grid">
+      ${images.map((url, i) => `
+        <div class="admin-img-item">
+          <img src="${url}" alt="${name} ${i+1}">
+          <button class="admin-img-delete" onclick="deleteHobbyImage('${name}', ${i})">✕</button>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+window.uploadHobbyImages = async function(input, name) {
+  const files = Array.from(input.files);
+  if (!files.length) return;
+  toast(`⏳ Uploading ${files.length} photo(s)...`);
+  try {
+    for (const file of files) {
+      const url = await uploadToCloudinary(file);
+      if (!hobbyData[name]) hobbyData[name] = [];
+      hobbyData[name].push(url);
+    }
+    await setDoc(doc(db, 'hobbies', name), { images: hobbyData[name] }, { merge: true });
+    renderHobbyContent();
+    toast(`${files.length} photo(s) uploaded!`, 'success');
+  } catch(e) { toast('Upload failed: ' + e.message, 'error'); }
+};
+
+window.deleteHobbyImage = async function(name, index) {
+  if (!confirm('Delete this photo?')) return;
+  hobbyData[name].splice(index, 1);
+  try {
+    await setDoc(doc(db, 'hobbies', name), { images: hobbyData[name] });
+    renderHobbyContent();
+    toast('Photo deleted', 'success');
+  } catch(e) { toast('Failed: ' + e.message, 'error'); }
+};
+
+// ============================================
+// PROJECTS
+// ============================================
+let projects = [];
+let pendingProjectImages = [];
+
+async function loadProjects() {
+  const list = document.getElementById('projects-list');
+  list.innerHTML = '<div style="color:var(--text-dim);font-family:Share Tech Mono,monospace;font-size:0.6rem;letter-spacing:2px;">LOADING...</div>';
+  try {
+    const snap = await getDocs(collection(db, 'projects'));
+    projects = [];
+    snap.forEach(d => projects.push({ id: d.id, ...d.data() }));
+    renderProjects();
+  } catch(e) { renderProjects(); }
+}
+
+function renderProjects() {
+  const list = document.getElementById('projects-list');
+  if (!projects.length) {
+    list.innerHTML = '<div style="color:var(--text-dim);font-family:Share Tech Mono,monospace;font-size:0.6rem;letter-spacing:2px;grid-column:1/-1;">NO CUSTOM PROJECTS YET</div>';
+    return;
+  }
+  list.innerHTML = projects.map(p => `
+    <div class="admin-item-card">
+      <div class="admin-item-card-title">${p.title}</div>
+      <div class="admin-item-card-sub">${p.type || ''} · ${p.year || ''}</div>
+      <div class="admin-item-actions">
+        <button class="admin-btn admin-btn-red" onclick="deleteProject('${p.id}')">DELETE</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+window.showAddProjectForm = function() {
+  pendingProjectImages = [];
+  document.getElementById('add-project-form').style.display = 'block';
+  document.getElementById('new-proj-img-preview').innerHTML = '';
+};
+
+window.queueProjectImages = async function(input) {
+  const files = Array.from(input.files);
+  toast(`⏳ Uploading ${files.length} image(s)...`);
+  try {
+    for (const file of files) {
+      const url = await uploadToCloudinary(file);
+      pendingProjectImages.push(url);
+    }
+    const grid = document.getElementById('new-proj-img-preview');
+    grid.innerHTML = pendingProjectImages.map((url, i) => `
+      <div class="admin-img-item"><img src="${url}" alt="Project ${i+1}"></div>
+    `).join('');
+    toast(`${files.length} image(s) ready!`, 'success');
+  } catch(e) { toast('Upload failed: ' + e.message, 'error'); }
+};
+
+window.saveNewProject = async function() {
+  const title = document.getElementById('new-proj-title').value.trim();
+  if (!title) { toast('Title required', 'error'); return; }
+  const data = {
+    title,
+    type: document.getElementById('new-proj-type').value,
+    year: document.getElementById('new-proj-year').value,
+    desc: document.getElementById('new-proj-desc').value,
+    stack: document.getElementById('new-proj-stack').value.split(',').map(s=>s.trim()).filter(Boolean),
+    github: document.getElementById('new-proj-github').value,
+    images: pendingProjectImages
+  };
+  try {
+    const ref = await addDoc(collection(db, 'projects'), data);
+    projects.push({ id: ref.id, ...data });
+    renderProjects();
+    document.getElementById('add-project-form').style.display = 'none';
+    toast('Project saved!', 'success');
+  } catch(e) { toast('Failed: ' + e.message, 'error'); }
+};
+
+window.deleteProject = async function(id) {
+  if (!confirm('Delete this project?')) return;
+  try {
+    await deleteDoc(doc(db, 'projects', id));
+    projects = projects.filter(p => p.id !== id);
+    renderProjects();
+    toast('Project deleted', 'success');
+  } catch(e) { toast('Failed: ' + e.message, 'error'); }
+};
+
+// ============================================
+// CERTIFICATIONS
+// ============================================
+let certs = [];
+let pendingCertUrl = null;
+
+async function loadCerts() {
+  const list = document.getElementById('certs-list');
+  list.innerHTML = '<div style="color:var(--text-dim);font-family:Share Tech Mono,monospace;font-size:0.6rem;letter-spacing:2px;">LOADING...</div>';
+  try {
+    const snap = await getDocs(collection(db, 'certifications'));
+    certs = [];
+    snap.forEach(d => certs.push({ id: d.id, ...d.data() }));
+    renderCerts();
+  } catch(e) { renderCerts(); }
+}
+
+function renderCerts() {
+  const list = document.getElementById('certs-list');
+  if (!certs.length) {
+    list.innerHTML = '<div style="color:var(--text-dim);font-family:Share Tech Mono,monospace;font-size:0.6rem;letter-spacing:2px;grid-column:1/-1;">NO CERTIFICATIONS YET</div>';
+    return;
+  }
+  list.innerHTML = certs.map(c => `
+    <div class="admin-item-card">
+      ${c.imageUrl ? `<img src="${c.imageUrl}" style="width:100%;height:80px;object-fit:cover;margin-bottom:10px;opacity:0.7;">` : ''}
+      <div class="admin-item-card-title">${c.title}</div>
+      <div class="admin-item-card-sub">${c.issuer} · ${c.year}</div>
+      <div class="admin-item-actions">
+        <button class="admin-btn admin-btn-red" onclick="deleteCert('${c.id}')">DELETE</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+window.showAddCertForm = function() {
+  pendingCertUrl = null;
+  document.getElementById('cert-file-preview').style.display = 'none';
+  document.getElementById('add-cert-form').style.display = 'block';
+};
+
+window.previewCertFile = async function(input) {
+  const file = input.files[0];
+  if (!file) return;
+  toast('⏳ Uploading certificate...');
+  try {
+    // For PDFs, upload as image type so Cloudinary converts it
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', 'portfolio_upload');
+    if (file.type === 'application/pdf') {
+      formData.append('resource_type', 'image');
+    }
+    const res = await fetch(`https://api.cloudinary.com/v1_1/dvbtqd57y/upload`, { method: 'POST', body: formData });
+    const data = await res.json();
+    pendingCertUrl = data.secure_url;
+    const preview = document.getElementById('cert-file-preview');
+    preview.src = pendingCertUrl;
+    preview.style.display = 'block';
+    toast('Certificate uploaded!', 'success');
+  } catch(e) { toast('Upload failed: ' + e.message, 'error'); }
+};
+
+window.saveNewCert = async function() {
+  const title = document.getElementById('new-cert-title').value.trim();
+  if (!title) { toast('Title required', 'error'); return; }
+  const data = {
+    title,
+    issuer: document.getElementById('new-cert-issuer').value,
+    year: document.getElementById('new-cert-year').value,
+    imageUrl: pendingCertUrl || ''
+  };
+  try {
+    const ref = await addDoc(collection(db, 'certifications'), data);
+    certs.push({ id: ref.id, ...data });
+    renderCerts();
+    document.getElementById('add-cert-form').style.display = 'none';
+    toast('Certification saved!', 'success');
+  } catch(e) { toast('Failed: ' + e.message, 'error'); }
+};
+
+window.deleteCert = async function(id) {
+  if (!confirm('Delete this certification?')) return;
+  try {
+    await deleteDoc(doc(db, 'certifications', id));
+    certs = certs.filter(c => c.id !== id);
+    renderCerts();
+    toast('Certification deleted', 'success');
+  } catch(e) { toast('Failed: ' + e.message, 'error'); }
+};
+
+// ============================================
+// CONTACT
+// ============================================
+async function loadContact() {
+  try {
+    const snap = await getDoc(doc(db, 'cms', 'contact'));
+    if (snap.exists()) {
+      const d = snap.data();
+      if (d.github) document.getElementById('contact-github').value = d.github;
+      if (d.email) document.getElementById('contact-email').value = d.email;
+      if (d.phone) document.getElementById('contact-phone').value = d.phone;
+      if (d.facebook) document.getElementById('contact-facebook').value = d.facebook;
+    }
+  } catch(e) { console.log('No contact data yet'); }
+}
+
+window.saveContact = async function() {
+  const data = {
+    github: document.getElementById('contact-github').value,
+    email: document.getElementById('contact-email').value,
+    phone: document.getElementById('contact-phone').value,
+    facebook: document.getElementById('contact-facebook').value
+  };
+  try {
+    await setDoc(doc(db, 'cms', 'contact'), data);
+    toast('Contact info saved!', 'success');
+  } catch(e) { toast('Failed: ' + e.message, 'error'); }
+};
+
+// Load profile on start
+loadProfile();
+renderAboutForm();
+</script>
+</body>
+</html>

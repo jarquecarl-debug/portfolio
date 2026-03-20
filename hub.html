@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Divergence — Carl Christian Jarque</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<link rel="stylesheet" href="css/style.css">
+<style>
+.hub-page{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:48px;position:relative;}
+.hub-char{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);opacity:0.06;pointer-events:none;width:600px;height:500px;}
+.hub-mode-label{font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:var(--text-dim);letter-spacing:6px;text-transform:uppercase;text-align:center;position:relative;z-index:2;}
+.hub-mode-label::before,.hub-mode-label::after{content:'——';color:var(--gold-dim);margin:0 12px;}
+.hub-cards{display:flex;gap:28px;position:relative;z-index:2;}
+.hub-card{width:300px;border:1px solid var(--border);background:rgba(6,9,18,0.8);padding:36px 32px;cursor:pointer;transition:all 0.35s cubic-bezier(0.25,0.46,0.45,0.94);position:relative;overflow:hidden;text-decoration:none;display:block;clip-path:polygon(0 0,calc(100% - 20px) 0,100% 20px,100% 100%,20px 100%,0 calc(100% - 20px));}
+.hub-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,168,76,0.06) 0%,transparent 60%);opacity:0;transition:opacity 0.3s;}
+.hub-card:hover::before{opacity:1;}
+.hub-card:hover{border-color:var(--gold);transform:translateY(-8px);box-shadow:0 20px 60px rgba(201,168,76,0.12);}
+.hub-card-num{font-family:'Share Tech Mono',monospace;font-size:0.55rem;color:var(--gold-dim);letter-spacing:4px;margin-bottom:16px;display:flex;align-items:center;gap:10px;}
+.hub-card-num::after{content:'';flex:1;height:1px;background:var(--gold-dim);opacity:0.4;}
+.hub-card-icon{width:52px;height:52px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;margin-bottom:20px;clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);background:rgba(201,168,76,0.05);transition:all 0.3s;}
+.hub-card:hover .hub-card-icon{background:rgba(201,168,76,0.12);}
+.hub-card-icon svg{width:22px;height:22px;fill:var(--gold);}
+.hub-card-title{font-family:'Cinzel',serif;font-size:1.15rem;font-weight:600;color:var(--gold-light);margin-bottom:12px;letter-spacing:1px;transition:all 0.3s;}
+.hub-card:hover .hub-card-title{text-shadow:0 0 20px rgba(201,168,76,0.4);}
+.hub-card-desc{font-family:'Rajdhani',sans-serif;font-size:0.85rem;color:var(--text-dim);line-height:1.6;margin-bottom:24px;}
+.hub-card-cta{display:flex;align-items:center;gap:10px;font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:var(--gold-dim);letter-spacing:3px;transition:all 0.3s;}
+.hub-card:hover .hub-card-cta{color:var(--gold);gap:16px;}
+.hub-card-cta-line{flex:1;height:1px;background:var(--gold-dim);transition:all 0.3s;}
+.hub-card:hover .hub-card-cta-line{background:var(--gold);box-shadow:0 0 8px var(--gold);}
+.hub-difficulty{position:absolute;top:14px;right:14px;font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--cyan);letter-spacing:2px;padding:3px 8px;border:1px solid rgba(0,217,255,0.2);background:rgba(0,217,255,0.05);}
+.hub-bottom-hint{position:relative;z-index:2;display:flex;align-items:center;gap:20px;opacity:0.4;}
+.hub-hint-item{display:flex;align-items:center;gap:8px;font-family:'Share Tech Mono',monospace;font-size:0.55rem;color:var(--text-dim);letter-spacing:2px;}
+.hub-hint-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);animation:pulse-green 2s infinite;}
+.hub-hint-sep{width:1px;height:16px;background:var(--gold-dim);opacity:0.4;}
+</style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursor-ring"></div>
+<div class="scanlines"></div>
+<div class="corner-deco tl"><svg viewBox="0 0 40 40" fill="none" stroke="#c9a84c" stroke-width="1.5"><path d="M0 20 L0 0 L20 0"/><path d="M8 20 L8 8 L20 8"/></svg></div>
+<div class="corner-deco tr"><svg viewBox="0 0 40 40" fill="none" stroke="#c9a84c" stroke-width="1.5"><path d="M0 20 L0 0 L20 0"/><path d="M8 20 L8 8 L20 8"/></svg></div>
+<div class="corner-deco bl"><svg viewBox="0 0 40 40" fill="none" stroke="#c9a84c" stroke-width="1.5"><path d="M0 20 L0 0 L20 0"/><path d="M8 20 L8 8 L20 8"/></svg></div>
+<div class="corner-deco br"><svg viewBox="0 0 40 40" fill="none" stroke="#c9a84c" stroke-width="1.5"><path d="M0 20 L0 0 L20 0"/><path d="M8 20 L8 8 L20 8"/></svg></div>
+<canvas id="bg-canvas"></canvas>
+<div class="nav-breadcrumb">
+  <div class="nav-logo" onclick="openAdminModal()"><svg viewBox="0 0 24 24"><path d="M12 2L22 8.5V15.5L12 22L2 15.5V8.5L12 2Z"/></svg></div>
+  <span class="nav-section-name">Divergence</span>
+</div>
+<nav class="floating-nav">
+  <a href="index.html" class="nav-item"><span class="nav-item-label">HOME</span><div class="nav-dot"></div></a>
+  <a href="about.html" class="nav-item"><span class="nav-item-label">WHO AM I</span><div class="nav-dot"></div></a>
+  <a href="hobbies.html" class="nav-item"><span class="nav-item-label">HOBBIES</span><div class="nav-dot"></div></a>
+  <a href="hub.html" class="nav-item active"><span class="nav-item-label">EXPLORE</span><div class="nav-dot"></div></a>
+  <a href="skills.html" class="nav-item"><span class="nav-item-label">ABILITIES</span><div class="nav-dot"></div></a>
+  <a href="certifications.html" class="nav-item"><span class="nav-item-label">CERTS</span><div class="nav-dot"></div></a>
+  <a href="projects.html" class="nav-item"><span class="nav-item-label">PROJECTS</span><div class="nav-dot"></div></a>
+  <a href="contact.html" class="nav-item"><span class="nav-item-label">CONTACT</span><div class="nav-dot"></div></a>
+</nav>
+<a href="index.html" class="back-btn">
+  <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+  <span class="back-btn-text">BACK</span>
+</a>
+
+<div class="hub-page">
+  <div class="hub-char">
+    <svg viewBox="0 0 600 500" fill="none" style="width:100%;height:100%;">
+      <line x1="300" y1="50" x2="300" y2="10" stroke="#c9a84c" stroke-width="0.5" stroke-opacity="0.5"/>
+      <line x1="300" y1="50" x2="360" y2="20" stroke="#c9a84c" stroke-width="0.5" stroke-opacity="0.3"/>
+      <line x1="300" y1="50" x2="240" y2="20" stroke="#c9a84c" stroke-width="0.5" stroke-opacity="0.3"/>
+      <line x1="300" y1="50" x2="420" y2="40" stroke="#c9a84c" stroke-width="0.5" stroke-opacity="0.2"/>
+      <line x1="300" y1="50" x2="180" y2="40" stroke="#c9a84c" stroke-width="0.5" stroke-opacity="0.2"/>
+      <path d="M240 160 C220 200 210 260 205 330 L195 480" stroke="#c9a84c" stroke-width="1" stroke-opacity="0.5" fill="none"/>
+      <path d="M360 160 C380 200 390 260 395 330 L405 480" stroke="#c9a84c" stroke-width="1" stroke-opacity="0.5" fill="none"/>
+      <path d="M240 160 C220 140 205 135 192 138 C178 142 173 155 175 168" stroke="#c9a84c" stroke-width="1" stroke-opacity="0.4" fill="none"/>
+      <path d="M360 160 C380 140 395 135 408 138 C422 142 427 155 425 168" stroke="#c9a84c" stroke-width="1" stroke-opacity="0.4" fill="none"/>
+      <ellipse cx="300" cy="100" rx="55" ry="68" fill="#0f1322" stroke="#c9a84c" stroke-width="1" stroke-opacity="0.5"/>
+      <ellipse cx="300" cy="108" rx="30" ry="38" fill="#050810" opacity="0.95"/>
+    </svg>
+  </div>
+
+  <div class="hub-mode-label">SELECT OPERATION MODE</div>
+
+  <div class="hub-cards">
+    <a href="contact.html" class="hub-card">
+      <div class="hub-difficulty">OPEN CHANNEL</div>
+      <div class="hub-card-num">OPERATION I</div>
+      <div class="hub-card-icon">
+        <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+      </div>
+      <div class="hub-card-title">Get in Touch with Me</div>
+      <div class="hub-card-desc">Open a direct communication channel. Reach out through available contact vectors and initiate connection.</div>
+      <div class="hub-card-cta"><span>INITIATE</span><div class="hub-card-cta-line"></div><span>→</span></div>
+    </a>
+    <a href="skills.html" class="hub-card">
+      <div class="hub-difficulty">SCAN MATRIX</div>
+      <div class="hub-card-num">OPERATION II</div>
+      <div class="hub-card-icon">
+        <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+      </div>
+      <div class="hub-card-title">Abilities</div>
+      <div class="hub-card-desc">Scan technical and soft skill parameters. Review the full capability matrix across all domains.</div>
+      <div class="hub-card-cta"><span>INITIATE</span><div class="hub-card-cta-line"></div><span>→</span></div>
+    </a>
+  </div>
+
+  <div class="hub-bottom-hint">
+    <div class="hub-hint-item"><div class="hub-hint-dot"></div><span>SYSTEM ONLINE</span></div>
+    <div class="hub-hint-sep"></div>
+    <div class="hub-hint-item"><span>2 OPERATIONS AVAILABLE</span></div>
+    <div class="hub-hint-sep"></div>
+    <div class="hub-hint-item"><span>SELECT TO PROCEED</span></div>
+  </div>
+</div>
+
+<div id="admin-modal">
+  <div id="admin-terminal">
+    <div class="terminal-dots"><div class="terminal-dot red"></div><div class="terminal-dot amber"></div><div class="terminal-dot green"></div><span class="terminal-label">ADMIN TERMINAL v1.0</span></div>
+    <div id="admin-terminal-log"></div>
+    <div class="terminal-input-row"><span class="terminal-prompt">PASS://</span><input type="password" id="admin-password-input" placeholder="enter access key..." onkeydown="handleAdminKey(event)"></div>
+    <div class="terminal-buttons"><button class="terminal-btn" onclick="attemptAdminLogin()">AUTHENTICATE</button><button class="terminal-btn close" onclick="closeAdminModal()">✕</button></div>
+  </div>
+</div>
+
+<script src="js/main.js"></script>
+<script>
+window.addEventListener('load', () => {
+  gsap.from('.hub-mode-label', { opacity: 0, y: -20, duration: 0.5, delay: 0.2 });
+  gsap.from('.hub-card', { opacity: 0, y: 40, duration: 0.6, stagger: 0.15, delay: 0.4 });
+  gsap.from('.hub-bottom-hint', { opacity: 0, duration: 0.5, delay: 0.9 });
+});
+</script>
+</body>
+</html>

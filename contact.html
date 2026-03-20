@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Get in Touch — Carl Christian Jarque</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<link rel="stylesheet" href="css/style.css">
+<style>
+.contact-page {
+  width: 100%; height: 100%;
+  display: flex;
+  align-items: stretch;
+  position: relative;
+}
+
+/* ============================================
+   LEFT: Roman numeral contacts
+   ============================================ */
+.contact-left {
+  flex: 0 0 44%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 80px 0 60px 60px;
+  gap: 12px;
+  position: relative;
+}
+
+.contact-header { margin-bottom: 16px; }
+
+/* Roman numeral contact item */
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 16px 20px;
+  border: 1px solid var(--border);
+  background: rgba(6,9,18,0.6);
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+}
+.contact-item::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0;
+  width: 3px; height: 100%;
+  background: var(--gold);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.contact-item:hover, .contact-item.active {
+  border-color: var(--gold);
+  background: rgba(201,168,76,0.06);
+}
+.contact-item:hover::before,
+.contact-item.active::before { opacity: 1; }
+
+/* Shimmer sweep */
+.contact-item::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(201,168,76,0.05), transparent);
+  transition: left 0.5s;
+}
+.contact-item:hover::after { left: 100%; }
+
+.contact-numeral {
+  font-family: 'Cinzel', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--gold-dim);
+  min-width: 32px;
+  transition: color 0.3s;
+}
+.contact-item:hover .contact-numeral,
+.contact-item.active .contact-numeral { color: var(--gold); }
+
+.contact-icon-wrap {
+  width: 38px; height: 38px;
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  background: rgba(201,168,76,0.05);
+  flex-shrink: 0;
+  transition: all 0.3s;
+}
+.contact-item:hover .contact-icon-wrap,
+.contact-item.active .contact-icon-wrap {
+  background: rgba(201,168,76,0.12);
+  box-shadow: 0 0 12px rgba(201,168,76,0.15);
+}
+.contact-icon-wrap svg { width: 16px; height: 16px; fill: var(--gold); }
+
+.contact-text { flex: 1; }
+.contact-label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.55rem;
+  color: var(--text-dim);
+  letter-spacing: 3px;
+  margin-bottom: 3px;
+}
+.contact-value {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--blue-white);
+  transition: color 0.3s;
+}
+.contact-item:hover .contact-value,
+.contact-item.active .contact-value { color: var(--gold-light); }
+
+.contact-arrow {
+  color: var(--gold-dim);
+  font-size: 1rem;
+  transition: all 0.3s;
+  opacity: 0;
+}
+.contact-item:hover .contact-arrow,
+.contact-item.active .contact-arrow {
+  opacity: 1;
+  color: var(--gold);
+  transform: translateX(3px);
+}
+
+/* ============================================
+   RIGHT: Character + cube hologram
+   ============================================ */
+.contact-right {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Character - angled, slightly right of center */
+.contact-char-wrap {
+  position: absolute;
+  bottom: 0;
+  right: 5%;
+  width: 380px;
+  height: 88vh;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.contact-char-glow {
+  position: absolute;
+  bottom: 0;
+  width: 260px; height: 420px;
+  background: radial-gradient(ellipse at 50% 80%, rgba(201,168,76,0.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* CUBE HOLOGRAM AREA */
+.cube-hologram-wrap {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -55%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  opacity: 0;
+  transition: opacity 0.4s;
+  pointer-events: none;
+  z-index: 20;
+}
+.cube-hologram-wrap.visible {
+  opacity: 1;
+  pointer-events: all;
+}
+
+#contact-cube-canvas {
+  filter: drop-shadow(0 0 20px var(--cyan)) drop-shadow(0 0 50px rgba(0,217,255,0.3));
+}
+
+/* Hologram data panel that materializes */
+.cube-data-panel {
+  background: rgba(6,9,18,0.9);
+  border: 1px solid rgba(0,217,255,0.35);
+  padding: 20px 28px;
+  min-width: 260px;
+  text-align: center;
+  clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+  animation: holo-in 0.4s ease-out;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Scan line effect on panel */
+.cube-data-panel::before {
+  content: '';
+  position: absolute;
+  left: 0; top: -100%;
+  width: 100%; height: 2px;
+  background: rgba(0,217,255,0.3);
+  animation: panel-scan 2s linear infinite;
+}
+@keyframes panel-scan {
+  0% { top: -5%; }
+  100% { top: 105%; }
+}
+
+.cube-data-label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.55rem;
+  color: var(--cyan);
+  letter-spacing: 4px;
+  margin-bottom: 8px;
+  opacity: 0.7;
+}
+.cube-data-value {
+  font-family: 'Cinzel', serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--gold-light);
+  margin-bottom: 6px;
+  word-break: break-all;
+}
+.cube-data-link {
+  display: inline-block;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.55rem;
+  color: var(--cyan);
+  letter-spacing: 2px;
+  margin-top: 8px;
+  padding: 5px 14px;
+  border: 1px solid rgba(0,217,255,0.3);
+  text-decoration: none;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.cube-data-link:hover { background: rgba(0,217,255,0.1); border-color: var(--cyan); }
+
+/* Idle hint */
+.contact-hint {
+  position: absolute;
+  bottom: 30px; left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  opacity: 0.4;
+  z-index: 5;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+.contact-hint.hidden { opacity: 0; }
+.contact-hint-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--cyan);
+  animation: pulse-green 2s infinite;
+}
+.contact-hint-text {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.55rem;
+  color: var(--text-dim);
+  letter-spacing: 3px;
+}
+</style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursor-ring"></div>
+<div class="scanlines"></div>
+<div class="corner-deco tl"><svg viewBox="0 0 40 40" fill="none" stroke="#c9a84c" stroke-width="1.5"><path d="M0 20 L0 0 L20 0"/><path d="M8 20 L8 8 L20 8"/></svg></div>
+<div class="corner-deco tr"><svg viewBox="0 0 40 40" fill="none" stroke="#c9a84c" stroke-width="1.5"><path d="M0 20 L0 0 L20 0"/><path d="M8 20 L8 8 L20 8"/></svg></div>
+<div class="corner-deco bl"><svg viewBox="0 0 40 40" fill="none" stroke="#c9a84c" stroke-width="1.5"><path d="M0 20 L0 0 L20 0"/><path d="M8 20 L8 8 L20 8"/></svg></div>
+<div class="corner-deco br"><svg viewBox="0 0 40 40" fill="none" stroke="#c9a84c" stroke-width="1.5"><path d="M0 20 L0 0 L20 0"/><path d="M8 20 L8 8 L20 8"/></svg></div>
+<canvas id="bg-canvas"></canvas>
+
+<div class="nav-breadcrumb">
+  <div class="nav-logo" onclick="openAdminModal()"><svg viewBox="0 0 24 24"><path d="M12 2L22 8.5V15.5L12 22L2 15.5V8.5L12 2Z"/></svg></div>
+  <span class="nav-section-name">Get in Touch</span>
+</div>
+<nav class="floating-nav">
+  <a href="index.html" class="nav-item"><span class="nav-item-label">HOME</span><div class="nav-dot"></div></a>
+  <a href="about.html" class="nav-item"><span class="nav-item-label">WHO AM I</span><div class="nav-dot"></div></a>
+  <a href="hobbies.html" class="nav-item"><span class="nav-item-label">HOBBIES</span><div class="nav-dot"></div></a>
+  <a href="hub.html" class="nav-item"><span class="nav-item-label">EXPLORE</span><div class="nav-dot"></div></a>
+  <a href="skills.html" class="nav-item"><span class="nav-item-label">ABILITIES</span><div class="nav-dot"></div></a>
+  <a href="certifications.html" class="nav-item"><span class="nav-item-label">CERTS</span><div class="nav-dot"></div></a>
+  <a href="projects.html" class="nav-item"><span class="nav-item-label">PROJECTS</span><div class="nav-dot"></div></a>
+  <a href="contact.html" class="nav-item active"><span class="nav-item-label">CONTACT</span><div class="nav-dot"></div></a>
+</nav>
+<a href="hub.html" class="back-btn">
+  <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+  <span class="back-btn-text">BACK</span>
+</a>
+
+<div class="contact-page">
+
+  <!-- LEFT: Contact items -->
+  <div class="contact-left">
+    <div class="contact-header">
+      <div class="section-tag">Communication Channels</div>
+      <h1 class="section-title" style="margin-bottom:0;">Get in Touch</h1>
+    </div>
+
+    <div class="contact-item" onclick="activateContact(0)">
+      <span class="contact-numeral">I</span>
+      <div class="contact-icon-wrap">
+        <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+      </div>
+      <div class="contact-text">
+        <div class="contact-label">GITHUB</div>
+        <div class="contact-value">jarquecarl-debug</div>
+      </div>
+      <span class="contact-arrow">›</span>
+    </div>
+
+    <div class="contact-item" onclick="activateContact(1)">
+      <span class="contact-numeral">II</span>
+      <div class="contact-icon-wrap">
+        <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+      </div>
+      <div class="contact-text">
+        <div class="contact-label">EMAIL</div>
+        <div class="contact-value">jarquecarl@gmail.com</div>
+      </div>
+      <span class="contact-arrow">›</span>
+    </div>
+
+    <div class="contact-item" onclick="activateContact(2)">
+      <span class="contact-numeral">III</span>
+      <div class="contact-icon-wrap">
+        <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+      </div>
+      <div class="contact-text">
+        <div class="contact-label">PHONE</div>
+        <div class="contact-value">+63 954 545 7518</div>
+      </div>
+      <span class="contact-arrow">›</span>
+    </div>
+
+    <div class="contact-item" onclick="activateContact(3)">
+      <span class="contact-numeral">IV</span>
+      <div class="contact-icon-wrap">
+        <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+      </div>
+      <div class="contact-text">
+        <div class="contact-label">FACEBOOK</div>
+        <div class="contact-value">carlchristian.jarque.7</div>
+      </div>
+      <span class="contact-arrow">›</span>
+    </div>
+
+  </div>
+
+  <!-- RIGHT: Character + cube -->
+  <div class="contact-right">
+
+    <!-- Cube hologram -->
+    <div class="cube-hologram-wrap" id="cube-hologram-wrap">
+      <canvas id="contact-cube-canvas" width="200" height="200"></canvas>
+      <div class="cube-data-panel" id="cube-data-panel">
+        <div class="cube-data-label" id="cube-data-label"></div>
+        <div class="cube-data-value" id="cube-data-value"></div>
+        <a class="cube-data-link" id="cube-data-link" target="_blank"></a>
+      </div>
+    </div>
+
+    <!-- Character SVG - angled pose, arm slightly raised -->
+    <div class="contact-char-wrap">
+      <div class="contact-char-glow"></div>
+      <svg viewBox="0 0 400 700" fill="none" xmlns="http://www.w3.org/2000/svg"
+        style="width:380px;height:680px;filter:drop-shadow(0 0 16px rgba(201,168,76,0.12))">
+        <defs>
+          <linearGradient id="cCoatGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#1a1e2e"/><stop offset="100%" stop-color="#0d1020"/></linearGradient>
+          <linearGradient id="cGoldEdge" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#c9a84c" stop-opacity="0.8"/><stop offset="50%" stop-color="#f0c96e" stop-opacity="0.6"/><stop offset="100%" stop-color="#c9a84c" stop-opacity="0.8"/></linearGradient>
+          <radialGradient id="cBodyGlow" cx="50%" cy="40%" r="50%"><stop offset="0%" stop-color="#c9a84c" stop-opacity="0.1"/><stop offset="100%" stop-color="#c9a84c" stop-opacity="0"/></radialGradient>
+        </defs>
+        <ellipse cx="200" cy="690" rx="100" ry="14" fill="rgba(201,168,76,0.12)" opacity="0.6"/>
+        <!-- Body -->
+        <path d="M145 240 C125 280 110 340 105 420 C100 480 97 540 93 620 C93 630 95 640 100 645 C115 650 135 648 150 645 L153 580 L157 520 L200 520 L243 520 L247 580 L250 645 C265 648 285 650 300 645 C305 640 307 630 307 620 C303 540 300 480 295 420 C290 340 275 280 255 240 Z" fill="url(#cCoatGrad)"/>
+        <path d="M170 240 L185 380 L200 400 L215 380 L230 240" fill="#111520" stroke="#c9a84c" stroke-width="0.5" stroke-opacity="0.3"/>
+        <path d="M145 240 L135 320 L115 420 L105 520 L93 620" stroke="url(#cGoldEdge)" stroke-width="1.5" fill="none" opacity="0.5"/>
+        <path d="M255 240 L265 320 L285 420 L295 520 L307 620" stroke="url(#cGoldEdge)" stroke-width="1.5" fill="none" opacity="0.5"/>
+        <!-- Inner shirt -->
+        <path d="M183 255 L185 318 L200 328 L215 318 L217 255" fill="#0a1520" opacity="0.8"/>
+        <path d="M188 268 L188 308 M195 263 L195 313 M202 261 L202 316" stroke="#00d9ff" stroke-width="0.4" opacity="0.3"/>
+        <!-- SHOULDERS -->
+        <path d="M145 240 C135 220 125 215 113 218 C100 222 95 235 97 250 C99 260 105 268 115 270 C130 272 143 262 150 252 Z" fill="#161a28" stroke="#c9a84c" stroke-width="1" stroke-opacity="0.5"/>
+        <path d="M255 240 C265 220 275 215 287 218 C300 222 305 235 303 250 C301 260 295 268 285 270 C270 272 257 262 250 252 Z" fill="#161a28" stroke="#c9a84c" stroke-width="1" stroke-opacity="0.5"/>
+        <!-- LEFT ARM: raised, holding cube upward -->
+        <path d="M113 268 C100 250 88 230 80 210 C74 195 76 182 84 177 C92 172 102 178 108 192 C116 210 122 235 128 258 C133 275 138 258 143 248 Z" fill="#141828"/>
+        <path d="M80 210 C74 195 76 182 84 177 C92 172 102 178 108 192" stroke="#c9a84c" stroke-width="0.8" fill="none" opacity="0.4"/>
+        <!-- Left hand raised -->
+        <path d="M80 210 C74 205 70 196 73 189 C76 182 84 180 89 185 C94 190 94 200 90 208 Z" fill="#1a1e2e" stroke="#c9a84c" stroke-width="0.8" stroke-opacity="0.4"/>
+        <!-- RIGHT ARM: relaxed at side -->
+        <path d="M287 268 C300 288 310 318 312 362 C314 388 312 408 306 420 C302 430 294 434 286 430 C278 426 274 416 272 400 C270 380 272 356 271 332 C270 308 266 282 262 268 Z" fill="#141828"/>
+        <path d="M312 295 C315 320 315 348 312 372 C309 390 304 406 298 414" stroke="#c9a84c" stroke-width="0.8" fill="none" opacity="0.35"/>
+        <!-- Right hand -->
+        <path d="M306 420 C310 430 311 442 308 449 C305 454 298 455 293 450 C288 445 287 434 289 424 Z" fill="#1a1e2e" stroke="#c9a84c" stroke-width="0.8" stroke-opacity="0.4"/>
+        <!-- Neck -->
+        <rect x="188" y="190" width="24" height="52" rx="4" fill="#141828"/>
+        <!-- Hood -->
+        <path d="M150 195 C143 180 140 158 143 130 C146 100 159 76 178 62 C186 56 193 54 200 54 C207 54 214 56 222 62 C241 76 254 100 257 130 C260 158 257 180 250 195 C243 210 233 224 228 236 C218 238 200 240 172 238 C168 226 157 210 150 195 Z" fill="#0f1322" stroke="#c9a84c" stroke-width="0.8" stroke-opacity="0.4"/>
+        <path d="M150 195 C143 178 140 155 143 128 C146 97 160 73 179 59" stroke="#c9a84c" stroke-width="1.2" fill="none" opacity="0.4"/>
+        <path d="M250 195 C257 178 260 155 257 128 C254 97 240 73 221 59" stroke="#c9a84c" stroke-width="1.2" fill="none" opacity="0.4"/>
+        <!-- Face shadow -->
+        <ellipse cx="200" cy="142" rx="34" ry="40" fill="#050810" opacity="0.95"/>
+        <ellipse cx="190" cy="140" rx="4" ry="2" fill="#c9a84c" opacity="0.15">
+          <animate attributeName="opacity" values="0.1;0.25;0.1" dur="3s" repeatCount="indefinite"/>
+        </ellipse>
+        <ellipse cx="210" cy="140" rx="4" ry="2" fill="#c9a84c" opacity="0.15">
+          <animate attributeName="opacity" values="0.1;0.25;0.1" dur="3s" repeatCount="indefinite"/>
+        </ellipse>
+        <!-- Belt -->
+        <rect x="178" y="372" width="44" height="16" rx="2" fill="#161a28" stroke="#c9a84c" stroke-width="0.8" stroke-opacity="0.5"/>
+        <!-- Coat bottom -->
+        <path d="M105 520 C100 570 95 610 93 640 C105 645 125 646 143 643 L147 560 L153 520 Z" fill="#0d1020"/>
+        <path d="M295 520 C300 570 305 610 307 640 C295 645 275 646 257 643 L253 560 L247 520 Z" fill="#0d1020"/>
+        <!-- Legs -->
+        <rect x="160" y="520" width="36" height="118" rx="4" fill="#111520"/>
+        <rect x="204" y="520" width="36" height="118" rx="4" fill="#111520"/>
+        <!-- Boots -->
+        <path d="M158 632 L158 655 C158 662 162 667 168 669 L194 669 L196 632 Z" fill="#0d1020" stroke="#c9a84c" stroke-width="0.8" stroke-opacity="0.4"/>
+        <path d="M202 632 L204 669 L232 669 C238 667 242 662 242 655 L242 632 Z" fill="#0d1020" stroke="#c9a84c" stroke-width="0.8" stroke-opacity="0.4"/>
+        <!-- Particles around raised hand -->
+        <circle cx="72" cy="185" r="2" fill="#00d9ff" opacity="0.5">
+          <animate attributeName="cx" values="72;62;76;68;72" dur="3s" repeatCount="indefinite"/>
+          <animate attributeName="cy" values="185;172;180;192;185" dur="3s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0.3;0.7;0.4;0.6;0.3" dur="3s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="55" cy="200" r="1.5" fill="#c9a84c" opacity="0.5">
+          <animate attributeName="cx" values="55;68;50;62;55" dur="4s" repeatCount="indefinite"/>
+          <animate attributeName="cy" values="200;188;212;198;200" dur="4s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="88" cy="175" r="1" fill="#00d9ff" opacity="0.4">
+          <animate attributeName="cy" values="175;162;175" dur="2s" repeatCount="indefinite"/>
+        </circle>
+        <line x1="72" y1="185" x2="55" y2="200" stroke="#00d9ff" stroke-width="0.4" opacity="0.2">
+          <animate attributeName="opacity" values="0.1;0.4;0.1" dur="2.5s" repeatCount="indefinite"/>
+        </line>
+        <rect x="50" y="50" width="300" height="620" fill="url(#cBodyGlow)" opacity="0.4"/>
+      </svg>
+    </div>
+
+    <!-- Hint -->
+    <div class="contact-hint" id="contact-hint">
+      <div class="contact-hint-dot"></div>
+      <span class="contact-hint-text">SELECT A CHANNEL</span>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN MODAL -->
+<div id="admin-modal">
+  <div id="admin-terminal">
+    <div class="terminal-dots"><div class="terminal-dot red"></div><div class="terminal-dot amber"></div><div class="terminal-dot green"></div><span class="terminal-label">ADMIN TERMINAL v1.0</span></div>
+    <div id="admin-terminal-log"></div>
+    <div class="terminal-input-row"><span class="terminal-prompt">PASS://</span><input type="password" id="admin-password-input" placeholder="enter access key..." onkeydown="handleAdminKey(event)"></div>
+    <div class="terminal-buttons"><button class="terminal-btn" onclick="attemptAdminLogin()">AUTHENTICATE</button><button class="terminal-btn close" onclick="closeAdminModal()">✕</button></div>
+  </div>
+</div>
+
+<script src="js/main.js"></script>
+<script>
+// Contact data
+const contacts = [
+  {
+    label: 'GITHUB',
+    numeral: 'I',
+    value: 'jarquecarl-debug',
+    linkText: 'OPEN GITHUB',
+    href: 'https://github.com/jarquecarl-debug'
+  },
+  {
+    label: 'EMAIL',
+    numeral: 'II',
+    value: 'jarquecarl@gmail.com',
+    linkText: 'SEND EMAIL',
+    href: 'mailto:jarquecarl@gmail.com'
+  },
+  {
+    label: 'PHONE',
+    numeral: 'III',
+    value: '+63 954 545 7518',
+    linkText: 'CALL NOW',
+    href: 'tel:+639545457518'
+  },
+  {
+    label: 'FACEBOOK',
+    numeral: 'IV',
+    value: 'carlchristian.jarque.7',
+    linkText: 'OPEN FACEBOOK',
+    href: 'https://facebook.com/carlchristian.jarque.7'
+  }
+];
+
+// Cube animation
+let cubeAngle = 0;
+let cubeActive = false;
+const cubeCanvas = document.getElementById('contact-cube-canvas');
+const cubeCtx = cubeCanvas.getContext('2d');
+
+function drawContactCube() {
+  if (!cubeActive) return;
+  cubeCtx.clearRect(0, 0, 200, 200);
+  cubeAngle += 0.016;
+
+  const cx = 100, cy = 100, size = 65;
+  const cos = Math.cos(cubeAngle), sin = Math.sin(cubeAngle);
+  const cos2 = Math.cos(cubeAngle * 0.65), sin2 = Math.sin(cubeAngle * 0.65);
+
+  const verts = [[-1,-1,-1],[1,-1,-1],[1,1,-1],[-1,1,-1],[-1,-1,1],[1,-1,1],[1,1,1],[-1,1,1]];
+
+  const projected = verts.map(([x,y,z]) => {
+    const x2 = x*cos - z*sin;
+    const z2 = x*sin + z*cos;
+    const y2 = y*cos2 - z2*sin2;
+    const z3 = y*sin2 + z2*cos2;
+    const scale = size / (2.8 - z3*0.3);
+    return [cx + x2*scale, cy + y2*scale, z3];
+  });
+
+  const edges = [[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]];
+
+  edges.forEach(([a,b]) => {
+    const pa = projected[a], pb = projected[b];
+    const alpha = ((pa[2]+pb[2])/2 + 1)/2 * 0.8 + 0.15;
+    cubeCtx.beginPath();
+    cubeCtx.moveTo(pa[0], pa[1]);
+    cubeCtx.lineTo(pb[0], pb[1]);
+    cubeCtx.strokeStyle = `rgba(0,217,255,${alpha})`;
+    cubeCtx.lineWidth = 1.5;
+    cubeCtx.stroke();
+  });
+
+  projected.forEach(([px,py,pz]) => {
+    const alpha = (pz+1)/2 * 0.9 + 0.1;
+    const r = Math.max(1, (pz+1) * 2.5);
+    cubeCtx.beginPath();
+    cubeCtx.arc(px, py, r, 0, Math.PI*2);
+    cubeCtx.fillStyle = `rgba(0,217,255,${alpha})`;
+    cubeCtx.fill();
+    // Node glow
+    cubeCtx.beginPath();
+    cubeCtx.arc(px, py, r*2.5, 0, Math.PI*2);
+    cubeCtx.fillStyle = `rgba(0,217,255,${alpha*0.12})`;
+    cubeCtx.fill();
+  });
+
+  requestAnimationFrame(drawContactCube);
+}
+
+let activeContactIndex = -1;
+
+function activateContact(index) {
+  const contact = contacts[index];
+  const wrap = document.getElementById('cube-hologram-wrap');
+  const hint = document.getElementById('contact-hint');
+
+  // Update active states
+  document.querySelectorAll('.contact-item').forEach((el, i) => {
+    el.classList.toggle('active', i === index);
+  });
+
+  // Update cube data
+  document.getElementById('cube-data-label').textContent = `CHANNEL ${contact.numeral} — ${contact.label}`;
+  document.getElementById('cube-data-value').textContent = contact.value;
+  const link = document.getElementById('cube-data-link');
+  link.textContent = contact.linkText;
+  link.href = contact.href;
+
+  // Show cube
+  if (activeContactIndex === -1) {
+    wrap.classList.add('visible');
+    cubeActive = true;
+    drawContactCube();
+    gsap.fromTo(wrap, { scale: 0.5, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.4, ease: 'back.out(1.4)' });
+  } else {
+    // Already showing — just update content with a flash
+    gsap.fromTo('#cube-data-panel', { opacity: 0.3 }, { opacity: 1, duration: 0.3 });
+  }
+
+  hint.classList.add('hidden');
+  activeContactIndex = index;
+}
+
+// Entrance animations
+window.addEventListener('load', () => {
+  gsap.from('.contact-header', { opacity: 0, x: -20, duration: 0.5, delay: 0.2 });
+  gsap.from('.contact-item', { opacity: 0, x: -30, duration: 0.4, stagger: 0.1, delay: 0.3 });
+  gsap.from('.contact-char-wrap', { opacity: 0, x: 30, duration: 0.7, delay: 0.2 });
+});
+</script>
+</body>
+</html>
