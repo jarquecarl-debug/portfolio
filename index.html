@@ -4,299 +4,89 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Carl Christian Jarque — Portfolio</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <link rel="stylesheet" href="css/style.css">
 <style>
-/* HOME-SPECIFIC STYLES */
+/* HOME-SPECIFIC */
 .home-panel {
-  flex: 0 0 45%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
+  flex: 0 0 45%; height: 100%;
+  display: flex; flex-direction: column;
   justify-content: center;
   padding: 60px 40px 30px 20px;
-  gap: 8px;
-  position: relative;
+  gap: 8px; position: relative;
 }
 .home-panel::before {
-  content: '';
-  position: absolute;
-  left: -40px; top: 0;
-  width: 2px; height: 100%;
+  content: ''; position: absolute;
+  left: -40px; top: 0; width: 2px; height: 100%;
   background: linear-gradient(to bottom, transparent, var(--gold-dim) 20%, var(--gold) 50%, var(--gold-dim) 80%, transparent);
 }
-.character-area {
-  flex: 0 0 55%;
-  height: 100%;
-  position: relative;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-}
-.character-wrap {
-  position: relative;
-  width: 480px;
-  height: 90vh;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-}
-.character-glow {
-  position: absolute;
-  bottom: 0;
-  width: 300px; height: 500px;
-  background: radial-gradient(ellipse at 50% 80%, rgba(201,168,76,0.08) 0%, transparent 70%);
-  pointer-events: none;
-}
-#aria-sphere-container {
-  position: absolute;
-  top: 38%; right: 22%;
-  width: 80px; height: 80px;
-  cursor: pointer;
-  z-index: 100;
-}
-#aria-canvas {
-  width: 80px; height: 80px;
-  filter: drop-shadow(0 0 12px var(--cyan)) drop-shadow(0 0 28px rgba(0,217,255,0.4));
-  transition: filter 0.3s;
-}
-#aria-sphere-container:hover #aria-canvas {
-  filter: drop-shadow(0 0 20px var(--cyan)) drop-shadow(0 0 50px rgba(0,217,255,0.7));
-}
-.aria-label {
-  position: absolute;
-  bottom: -20px; left: 50%;
-  transform: translateX(-50%);
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 0.55rem;
-  color: var(--cyan);
-  letter-spacing: 2px;
-  white-space: nowrap;
-  opacity: 0.7;
-}
-.aria-ping {
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  width: 80px; height: 80px;
-  border-radius: 50%;
-  border: 1px solid var(--cyan);
-  animation: aria-ping 2s ease-out infinite;
-  pointer-events: none;
-}
-.banner {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 20px;
-  border: 1px solid var(--border);
-  background: linear-gradient(135deg, rgba(201,168,76,0.06) 0%, rgba(6,9,18,0.9) 100%);
-  cursor: pointer;
-  overflow: hidden;
-  transition: all 0.3s;
-  clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
-  text-decoration: none;
-}
-.banner::before {
-  content: '';
-  position: absolute;
-  left: -100%; top: 0;
-  width: 100%; height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(201,168,76,0.08), transparent);
-  transition: left 0.4s;
-}
+.character-area { flex: 0 0 55%; height: 100%; position: relative; display: flex; align-items: flex-end; justify-content: center; }
+.character-wrap { position: relative; width: 480px; height: 90vh; display: flex; align-items: flex-end; justify-content: center; }
+.character-glow { position: absolute; bottom: 0; width: 300px; height: 500px; background: radial-gradient(ellipse at 50% 80%, rgba(201,168,76,0.08) 0%, transparent 70%); pointer-events: none; }
+#aria-sphere-container { position: absolute; top: 38%; right: 22%; width: 80px; height: 80px; cursor: pointer; z-index: 100; }
+#aria-canvas { width: 80px; height: 80px; filter: drop-shadow(0 0 12px var(--cyan)) drop-shadow(0 0 28px rgba(0,217,255,0.4)); transition: filter 0.3s; }
+#aria-sphere-container:hover #aria-canvas { filter: drop-shadow(0 0 20px var(--cyan)) drop-shadow(0 0 50px rgba(0,217,255,0.7)); }
+.aria-label { position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%); font-family: 'Share Tech Mono', sans-serif; font-size: 0.55rem; color: var(--cyan); letter-spacing: 2px; white-space: nowrap; opacity: 0.7; }
+.aria-ping { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 80px; height: 80px; border-radius: 50%; border: 1px solid var(--cyan); animation: aria-ping 2s ease-out infinite; pointer-events: none; }
+.banner { position: relative; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; border: 1px solid var(--border); background: linear-gradient(135deg,rgba(201,168,76,0.06) 0%,rgba(6,9,18,0.9) 100%); cursor: pointer; overflow: hidden; transition: all 0.3s; clip-path: polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px)); text-decoration: none; }
+.banner::before { content: ''; position: absolute; left: -100%; top: 0; width: 100%; height: 100%; background: linear-gradient(90deg,transparent,rgba(201,168,76,0.08),transparent); transition: left 0.4s; }
 .banner:hover::before { left: 100%; }
 .banner:hover { border-color: var(--border-bright); }
 .banner-primary { height: 56px; }
 .banner-secondary { height: 46px; }
-.banner-icon {
-  width: 36px; height: 36px;
-  border: 1px solid var(--gold-dim);
-  display: flex; align-items: center; justify-content: center;
-  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-  background: rgba(201,168,76,0.08);
-  flex-shrink: 0;
-}
+.banner-icon { width: 36px; height: 36px; border: 1px solid var(--gold-dim); display: flex; align-items: center; justify-content: center; clip-path: polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%); background: rgba(201,168,76,0.08); flex-shrink: 0; }
 .banner-icon svg { width: 16px; height: 16px; fill: var(--gold); }
 .banner-text { flex: 1; padding: 0 14px; }
-.banner-name {
-  font-family: 'Cinzel', serif;
-  font-size: 0.85rem;
-  color: var(--gold-light);
-  letter-spacing: 1px;
-  display: block;
-  animation: glitch-text 4s infinite;
-}
-.banner-sub {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 0.6rem;
-  color: var(--text-dim);
-  letter-spacing: 2px;
-}
+.banner-name { font-family: 'Cinzel', serif; font-size: 0.85rem; color: var(--gold-light); letter-spacing: 1px; display: block; animation: glitch-text 4s infinite; }
+.banner-sub { font-family: 'Share Tech Mono', sans-serif; font-size: 0.6rem; color: var(--text-dim); letter-spacing: 2px; }
 .banner-arrow { color: var(--gold-dim); font-size: 1rem; transition: all 0.3s; }
 .banner:hover .banner-arrow { color: var(--gold); transform: translateX(4px); }
-.cards-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-}
-.mini-card {
-  border: 1px solid var(--border);
-  background: rgba(201,168,76,0.03);
-  padding: 10px 14px;
-  cursor: pointer;
-  transition: all 0.3s;
-  clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
-  text-decoration: none;
-  display: block;
-}
+.cards-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.mini-card { border: 1px solid var(--border); background: rgba(201,168,76,0.03); padding: 10px 14px; cursor: pointer; transition: all 0.3s; clip-path: polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px)); text-decoration: none; display: block; }
 .mini-card:hover { border-color: var(--border-bright); background: rgba(201,168,76,0.07); }
-.mini-card-icon {
-  width: 24px; height: 24px;
-  border: 1px solid var(--gold-dim);
-  display: flex; align-items: center; justify-content: center;
-  margin-bottom: 6px;
-  background: rgba(201,168,76,0.05);
-}
+.mini-card-icon { width: 24px; height: 24px; border: 1px solid var(--gold-dim); display: flex; align-items: center; justify-content: center; margin-bottom: 6px; background: rgba(201,168,76,0.05); }
 .mini-card-icon svg { width: 14px; height: 14px; fill: var(--gold); }
-.mini-card-name {
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--blue-white);
-  display: block;
-  margin-bottom: 2px;
-}
-.mini-card-sub {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 0.55rem;
-  color: var(--text-dim);
-  letter-spacing: 1px;
-}
-.alert-bar {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 7px 14px;
-  background: rgba(201,100,30,0.12);
-  border: 1px solid rgba(201,100,30,0.4);
-  border-left: 3px solid #c9641e;
-}
-.alert-dot {
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: #c9641e;
-  flex-shrink: 0;
-  animation: pulse-red 1.5s ease-in-out infinite;
-}
-.alert-text {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 0.62rem;
-  color: #e8883a;
-}
-.cert-btn {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  cursor: pointer;
-  opacity: 0.6;
-  transition: all 0.3s;
-  text-decoration: none;
-  width: fit-content;
-}
+.mini-card-name { font-family: 'Rajdhani', sans-serif; font-size: 0.8rem; font-weight: 600; color: var(--blue-white); display: block; margin-bottom: 2px; }
+.mini-card-sub { font-family: 'Share Tech Mono', sans-serif; font-size: 0.55rem; color: var(--text-dim); letter-spacing: 1px; }
+.alert-bar { display: flex; align-items: center; gap: 10px; padding: 7px 14px; background: rgba(201,100,30,0.12); border: 1px solid rgba(201,100,30,0.4); border-left: 3px solid #c9641e; }
+.alert-dot { width: 6px; height: 6px; border-radius: 50%; background: #c9641e; flex-shrink: 0; animation: pulse-red 1.5s ease-in-out infinite; }
+.alert-text { font-family: 'Share Tech Mono', sans-serif; font-size: 0.62rem; color: #e8883a; }
+.gold-btn { display: flex; align-items: center; justify-content: space-between; padding: 0 24px; height: 48px; background: linear-gradient(135deg,rgba(201,168,76,0.15) 0%,rgba(201,168,76,0.05) 100%); border: 1px solid var(--gold); cursor: pointer; transition: all 0.3s; clip-path: polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px); position: relative; overflow: hidden; font-family: 'Cinzel', serif; font-size: 0.9rem; font-weight: 600; color: var(--gold-light); letter-spacing: 3px; text-transform: uppercase; text-decoration: none; }
+.gold-btn:hover { background: linear-gradient(135deg,rgba(201,168,76,0.25) 0%,rgba(201,168,76,0.1) 100%); text-shadow: 0 0 12px var(--gold); }
+.cert-btn { display: flex; align-items: center; gap: 10px; cursor: pointer; opacity: 0.6; transition: all 0.3s; text-decoration: none; width: fit-content; }
 .cert-btn:hover { opacity: 1; }
-.cert-btn-icon {
-  width: 28px; height: 28px;
-  border-radius: 50%;
-  border: 1px solid var(--gold-dim);
-  display: flex; align-items: center; justify-content: center;
-}
-.cert-btn-text {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 0.65rem;
-  color: var(--gold);
-  letter-spacing: 2px;
-  text-transform: uppercase;
-}
-/* Loading screen */
-#loading-screen {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  z-index: 9000;
-  background: var(--bg);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 24px;
-}
-.loading-logo {
-  font-family: 'Cinzel', serif;
-  font-size: 1.2rem;
-  letter-spacing: 8px;
-  color: var(--gold);
-  animation: fade-pulse 1.5s ease-in-out infinite;
-}
-@keyframes fade-pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
-.loading-bar-wrap {
-  width: 240px; height: 2px;
-  background: rgba(201,168,76,0.15);
-  overflow: hidden;
-}
-.loading-bar-fill {
-  height: 100%;
-  background: var(--gold);
-  width: 0%;
-  transition: width 0.1s;
-  box-shadow: 0 0 8px var(--gold);
-}
-.loading-text {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 0.6rem;
-  color: var(--text-dim);
-  letter-spacing: 3px;
-}
+.cert-btn-icon { width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--gold-dim); display: flex; align-items: center; justify-content: center; }
+.cert-btn-text { font-family: 'Share Tech Mono', sans-serif; font-size: 0.65rem; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; }
+/* Loading */
+#loading-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9000; background: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; }
+.loading-logo { font-family: 'Cinzel', serif; font-size: 1.2rem; letter-spacing: 8px; color: var(--gold); animation: fade-pulse 1.5s ease-in-out infinite; }
+@keyframes fade-pulse { 0%,100% { opacity: 0.4; } 50% { opacity: 1; } }
+.loading-bar-wrap { width: 240px; height: 2px; background: rgba(201,168,76,0.15); overflow: hidden; }
+.loading-bar-fill { height: 100%; background: var(--gold); width: 0%; transition: width 0.1s; box-shadow: 0 0 8px var(--gold); }
+.loading-text { font-family: 'Share Tech Mono', sans-serif; font-size: 0.6rem; color: var(--text-dim); letter-spacing: 3px; }
 </style>
 </head>
 <body>
 
-<!-- LOADING SCREEN -->
 <div id="loading-screen">
   <div class="loading-logo">Carl's Universe</div>
   <div class="loading-bar-wrap"><div class="loading-bar-fill" id="loading-bar"></div></div>
   <div class="loading-text" id="loading-text">INITIALIZING SYSTEM...</div>
 </div>
 
-<!-- CURSOR -->
 <div class="cursor" id="cursor"></div>
 <div class="cursor-ring" id="cursor-ring"></div>
-
-<!-- SCANLINES -->
 <div class="scanlines"></div>
-
-<!-- CORNER DECORATIONS -->
 <div class="corner-deco tl"><svg viewBox="0 0 40 40" fill="none" stroke="#c9a84c" stroke-width="1.5"><path d="M0 20 L0 0 L20 0"/><path d="M8 20 L8 8 L20 8"/></svg></div>
 <div class="corner-deco tr"><svg viewBox="0 0 40 40" fill="none" stroke="#c9a84c" stroke-width="1.5"><path d="M0 20 L0 0 L20 0"/><path d="M8 20 L8 8 L20 8"/></svg></div>
 <div class="corner-deco bl"><svg viewBox="0 0 40 40" fill="none" stroke="#c9a84c" stroke-width="1.5"><path d="M0 20 L0 0 L20 0"/><path d="M8 20 L8 8 L20 8"/></svg></div>
 <div class="corner-deco br"><svg viewBox="0 0 40 40" fill="none" stroke="#c9a84c" stroke-width="1.5"><path d="M0 20 L0 0 L20 0"/><path d="M8 20 L8 8 L20 8"/></svg></div>
-
-<!-- BACKGROUND -->
 <canvas id="bg-canvas"></canvas>
 
-<!-- NAV BREADCRUMB -->
 <div class="nav-breadcrumb">
-  <div class="nav-logo" onclick="openAdminModal()">
-    <svg viewBox="0 0 24 24"><path d="M12 2L22 8.5V15.5L12 22L2 15.5V8.5L12 2Z"/></svg>
-  </div>
+  <div class="nav-logo" onclick="openAdminModal()"><svg viewBox="0 0 24 24"><path d="M12 2L22 8.5V15.5L12 22L2 15.5V8.5L12 2Z"/></svg></div>
   <span class="nav-section-name">Portfolio</span>
 </div>
-
-<!-- FLOATING NAV -->
 <nav class="floating-nav">
   <a href="index.html" class="nav-item active"><span class="nav-item-label">HOME</span><div class="nav-dot"></div></a>
   <a href="about.html" class="nav-item"><span class="nav-item-label">WHO AM I</span><div class="nav-dot"></div></a>
@@ -308,10 +98,7 @@
   <a href="contact.html" class="nav-item"><span class="nav-item-label">CONTACT</span><div class="nav-dot"></div></a>
 </nav>
 
-<!-- HOME PAGE -->
-<div class="page" style="align-items:center; justify-content:space-between; padding: 0 0 0 60px;">
-
-  <!-- CHARACTER AREA -->
+<div class="page" style="align-items:center;justify-content:space-between;padding:0 0 0 60px;">
   <div class="character-area">
     <div class="character-wrap">
       <div class="character-glow"></div>
@@ -320,22 +107,20 @@
         <div class="aria-ping"></div>
         <span class="aria-label">ARIA</span>
       </div>
-      <!-- CHARACTER SVG -->
-      <div style="position:absolute; bottom:0; width:100%; height:100%; display:flex; align-items:flex-end; justify-content:center;">
+      <div style="position:absolute;bottom:0;width:100%;height:100%;display:flex;align-items:flex-end;justify-content:center;">
         <svg viewBox="0 0 400 700" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:400px;height:700px;filter:drop-shadow(0 0 20px rgba(201,168,76,0.15))">
           <defs>
-            <radialGradient id="bodyGlow" cx="50%" cy="40%" r="50%"><stop offset="0%" stop-color="#c9a84c" stop-opacity="0.12"/><stop offset="100%" stop-color="#c9a84c" stop-opacity="0"/></radialGradient>
-            <linearGradient id="coatGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#1a1e2e"/><stop offset="100%" stop-color="#0d1020"/></linearGradient>
-            <linearGradient id="goldEdge" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#c9a84c" stop-opacity="0.8"/><stop offset="50%" stop-color="#f0c96e" stop-opacity="0.6"/><stop offset="100%" stop-color="#c9a84c" stop-opacity="0.8"/></linearGradient>
+            <radialGradient id="bG" cx="50%" cy="40%" r="50%"><stop offset="0%" stop-color="#c9a84c" stop-opacity="0.12"/><stop offset="100%" stop-color="#c9a84c" stop-opacity="0"/></radialGradient>
+            <linearGradient id="cG" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#1a1e2e"/><stop offset="100%" stop-color="#0d1020"/></linearGradient>
+            <linearGradient id="gE" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#c9a84c" stop-opacity="0.8"/><stop offset="50%" stop-color="#f0c96e" stop-opacity="0.6"/><stop offset="100%" stop-color="#c9a84c" stop-opacity="0.8"/></linearGradient>
           </defs>
           <ellipse cx="200" cy="690" rx="120" ry="18" fill="rgba(201,168,76,0.15)" opacity="0.6"/>
-          <path d="M140 240 C120 280 105 340 100 420 C95 480 92 540 88 620 C88 630 90 640 95 645 C110 650 130 648 145 645 L148 580 L152 520 L200 520 L248 520 L252 580 L255 645 C270 648 290 650 305 645 C310 640 312 630 312 620 C308 540 305 480 300 420 C295 340 280 280 260 240 Z" fill="url(#coatGrad)"/>
+          <path d="M140 240 C120 280 105 340 100 420 C95 480 92 540 88 620 C88 630 90 640 95 645 C110 650 130 648 145 645 L148 580 L152 520 L200 520 L248 520 L252 580 L255 645 C270 648 290 650 305 645 C310 640 312 630 312 620 C308 540 305 480 300 420 C295 340 280 280 260 240 Z" fill="url(#cG)"/>
           <path d="M170 240 L185 380 L200 400 L215 380 L230 240" fill="#111520" stroke="#c9a84c" stroke-width="0.5" stroke-opacity="0.3"/>
-          <path d="M140 240 L130 320 L110 420 L100 520 L88 620" stroke="url(#goldEdge)" stroke-width="1.5" fill="none" opacity="0.6"/>
-          <path d="M260 240 L270 320 L290 420 L300 520 L312 620" stroke="url(#goldEdge)" stroke-width="1.5" fill="none" opacity="0.6"/>
+          <path d="M140 240 L130 320 L110 420 L100 520 L88 620" stroke="url(#gE)" stroke-width="1.5" fill="none" opacity="0.6"/>
+          <path d="M260 240 L270 320 L290 420 L300 520 L312 620" stroke="url(#gE)" stroke-width="1.5" fill="none" opacity="0.6"/>
           <path d="M183 255 L185 320 L200 330 L215 320 L217 255" fill="#0a1520" opacity="0.8"/>
           <path d="M188 270 L188 310 M195 265 L195 315 M202 263 L202 318 M209 265 L209 315 M216 270 L216 310" stroke="#00d9ff" stroke-width="0.4" opacity="0.3"/>
-          <path d="M186 275 L214 275 M185 285 L215 285 M186 295 L214 295 M185 305 L215 305" stroke="#00d9ff" stroke-width="0.3" opacity="0.2"/>
           <path d="M140 240 C130 220 120 215 108 218 C95 222 90 235 92 250 C94 260 100 268 110 270 C125 272 138 262 145 252 Z" fill="#161a28" stroke="#c9a84c" stroke-width="1" stroke-opacity="0.5"/>
           <path d="M260 240 C270 220 280 215 292 218 C305 222 310 235 308 250 C306 260 300 268 290 270 C275 272 262 262 255 252 Z" fill="#161a28" stroke="#c9a84c" stroke-width="1" stroke-opacity="0.5"/>
           <path d="M108 270 C95 290 85 320 82 370 C80 395 82 415 88 430 C92 440 100 445 110 442 C118 440 124 432 126 420 C128 400 126 375 128 350 C130 325 135 300 138 275 Z" fill="#141828"/>
@@ -354,53 +139,42 @@
           <path d="M202 635 L204 672 L232 672 C238 670 242 665 242 658 L242 635 Z" fill="#0d1020" stroke="#c9a84c" stroke-width="0.8" stroke-opacity="0.4"/>
           <circle cx="320" cy="280" r="2" fill="#c9a84c" opacity="0.4"><animate attributeName="cy" values="280;260;280" dur="3s" repeatCount="indefinite"/></circle>
           <circle cx="80" cy="350" r="1.5" fill="#00d9ff" opacity="0.3"><animate attributeName="cy" values="350;330;350" dur="4s" repeatCount="indefinite"/></circle>
-          <rect x="50" y="50" width="300" height="620" fill="url(#bodyGlow)" opacity="0.4"/>
+          <rect x="50" y="50" width="300" height="620" fill="url(#bG)" opacity="0.4"/>
         </svg>
       </div>
     </div>
   </div>
 
-  <!-- RIGHT PANEL -->
   <div class="home-panel">
     <div class="section-tag">Portfolio</div>
     <h1 class="section-title">Carl Christian<br>Jarque</h1>
-
     <a href="about.html" class="banner banner-primary">
       <div class="banner-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg></div>
       <div class="banner-text"><span class="banner-name">Who Am I?</span><span class="banner-sub">IDENTITY PROTOCOL</span></div>
       <span class="banner-arrow">›</span>
     </a>
-
     <a href="hobbies.html" class="banner banner-secondary">
       <div class="banner-icon"><svg viewBox="0 0 24 24"><path d="M21 3H3C2 3 1 4 1 5v14c0 1.1.9 2 2 2h18c1 0 2-1 2-2V5c0-1-1-2-2-2zM5 17l3.5-4.5 2.5 3.01L14.5 11l4.5 6H5z"/></svg></div>
       <div class="banner-text"><span class="banner-name">Gallery of Possibilities</span><span class="banner-sub">HOBBIES · INTERESTS</span></div>
       <span class="banner-arrow">›</span>
     </a>
-
     <div class="cards-row">
       <a href="hobbies.html" class="mini-card">
         <div class="mini-card-icon"><svg viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg></div>
-        <span class="mini-card-name">Hobbies</span>
-        <span class="mini-card-sub">ALL CLAIMED</span>
+        <span class="mini-card-name">Hobbies</span><span class="mini-card-sub">ALL CLAIMED</span>
       </a>
       <a href="projects.html" class="mini-card">
         <div class="mini-card-icon"><svg viewBox="0 0 24 24"><path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/></svg></div>
-        <span class="mini-card-name">Projects</span>
-        <span class="mini-card-sub">2 / ACTIVE</span>
+        <span class="mini-card-name">Projects</span><span class="mini-card-sub">2 / ACTIVE</span>
       </a>
     </div>
-
     <div class="alert-bar">
       <div class="alert-dot"></div>
       <span class="alert-text">Currently open for opportunities — Let's build something together.</span>
     </div>
-
     <a href="hub.html" class="gold-btn">
-      <span>▷</span>
-      <span>Enter the Divergence</span>
-      <span>◁</span>
+      <span>▷</span><span>Enter the Divergence</span><span>◁</span>
     </a>
-
     <a href="certifications.html" class="cert-btn">
       <div class="cert-btn-icon"><svg viewBox="0 0 24 24" fill="#c9a84c"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg></div>
       <span class="cert-btn-text">Certifications</span>
@@ -408,7 +182,7 @@
   </div>
 </div>
 
-<!-- ARIA CHAT PANEL -->
+<!-- ARIA PANEL -->
 <div id="aria-panel">
   <div class="aria-panel-header">
     <div class="aria-avatar"><div class="aria-waveform"><span></span><span></span><span></span><span></span><span></span></div></div>
@@ -421,7 +195,7 @@
   <div class="aria-messages" id="aria-messages">
     <div class="msg aria">
       <div class="msg-avatar aria-av"><svg viewBox="0 0 24 24" fill="#00d9ff"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg></div>
-      <div class="msg-bubble"><div class="msg-text">Hello! I'm ARIA — Carl's personal assistant. How can I help you navigate his portfolio today?</div><div class="msg-time">Just now</div></div>
+      <div class="msg-bubble"><div class="msg-text">Hello! I'm ARIA — Carl's personal assistant. How can I help you today?</div><div class="msg-time">Just now</div></div>
     </div>
   </div>
   <div class="aria-typing" id="aria-typing"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>
@@ -434,31 +208,19 @@
 <!-- ADMIN MODAL -->
 <div id="admin-modal">
   <div id="admin-terminal">
-    <div class="terminal-dots">
-      <div class="terminal-dot red"></div>
-      <div class="terminal-dot amber"></div>
-      <div class="terminal-dot green"></div>
-      <span class="terminal-label">ADMIN TERMINAL v1.0</span>
-    </div>
+    <div class="terminal-dots"><div class="terminal-dot red"></div><div class="terminal-dot amber"></div><div class="terminal-dot green"></div><span class="terminal-label">ADMIN TERMINAL v1.0</span></div>
     <div id="admin-terminal-log"></div>
-    <div class="terminal-input-row">
-      <span class="terminal-prompt">PASS://</span>
-      <input type="password" id="admin-password-input" placeholder="enter access key..." onkeydown="handleAdminKey(event)">
-    </div>
-    <div class="terminal-buttons">
-      <button class="terminal-btn" onclick="attemptAdminLogin()">AUTHENTICATE</button>
-      <button class="terminal-btn close" onclick="closeAdminModal()">✕</button>
-    </div>
+    <div class="terminal-input-row"><span class="terminal-prompt">PASS://</span><input type="password" id="admin-password-input" placeholder="enter access key..." onkeydown="handleAdminKey(event)"></div>
+    <div class="terminal-buttons"><button class="terminal-btn" onclick="attemptAdminLogin()">AUTHENTICATE</button><button class="terminal-btn close" onclick="closeAdminModal()">✕</button></div>
   </div>
 </div>
 
 <script src="js/main.js"></script>
 <script>
-// Loading sequence
 function runLoadingSequence() {
   const bar = document.getElementById('loading-bar');
   const text = document.getElementById('loading-text');
-  const msgs = ['INITIALIZING SYSTEM...', 'LOADING PARTICLE NETWORK...', 'CALIBRATING ARIA...', 'ESTABLISHING CONNECTION...', "WELCOME TO CARL'S UNIVERSE"];
+  const msgs = ['INITIALIZING SYSTEM...','LOADING PARTICLE NETWORK...','CALIBRATING ARIA...','ESTABLISHING CONNECTION...',"WELCOME TO CARL'S UNIVERSE"];
   let progress = 0, msgIndex = 0;
   const interval = setInterval(() => {
     progress += Math.random() * 18 + 4;
