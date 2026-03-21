@@ -88,15 +88,6 @@ html, body {
 .floating-nav    { z-index: 1000; }
 .back-btn        { z-index: 1000; }
 .corner-deco     { z-index: 6;    }
-
-/* Inner page wrappers — fill full screen absolutely */
-.hub-page, .skills-page, .hobbies-page,
-.projects-page, .certs-page, .contact-page,
-.about-page {
-  position: absolute !important;
-  top: 0; right: 0; bottom: 0; left: 0;
-  z-index: 10;
-}
 .scanlines       { z-index: 5;    }
 #loading-screen  { z-index: 9000; }
 #aria-panel      { z-index: 500;  }
