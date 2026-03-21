@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Abilities — Carl Christian Jarque</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=optional" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 <style>
 .skills-page {
@@ -183,6 +183,28 @@
   background: linear-gradient(to right, transparent, var(--border), transparent);
   margin: 4px 0;
 }
+
+
+
+
+
+body > *:not(#bg-canvas):not(.scanlines):not(.cursor):not(.cursor-ring) {
+  position: relative;
+  z-index: 2;
+}
+.hub-page, .contact-page, .skills-page, .hobbies-page,
+.projects-page, .certs-page, .about-page, .cards-section,
+.contact-left, .contact-right, .hub-cards, .hub-mode-label,
+.hub-card, .contact-item, .contact-header,
+.skills-char-area, .skills-panel,
+.hobby-frame, .hobbies-header, .frames-gallery,
+.projects-list, .project-detail,
+.certs-grid, .certs-header-row, .certs-footer,
+.photo-section {
+  position: relative;
+  z-index: 20;
+}
+
 </style>
 </head>
 <body>
@@ -214,6 +236,7 @@
   <span class="back-btn-text">BACK</span>
 </a>
 
+<div class="page">
 <div class="skills-page">
 
   <!-- CHARACTER -->
@@ -387,6 +410,7 @@
 
   </div>
 </div>
+</div><!-- /.page -->
 
 <div id="admin-modal">
   <div id="admin-terminal">
@@ -401,15 +425,12 @@
 <script>
 window.addEventListener('load', () => {
   // Entrance animations
-  gsap.from('.skills-char-area', { opacity: 0, x: -30, duration: 0.7, delay: 0.2 });
-  gsap.from('.skills-header', { opacity: 0, y: -20, duration: 0.5, delay: 0.3 });
-  gsap.from('.skills-category', { opacity: 0, x: 30, duration: 0.5, stagger: 0.12, delay: 0.5 });
 
   // Animate skill bars on load
   setTimeout(() => {
     document.querySelectorAll('.skill-bar-fill').forEach(bar => {
       const target = bar.getAttribute('data-width');
-      gsap.to(bar, { width: target + '%', duration: 1.2, ease: 'power2.out', delay: Math.random() * 0.3 });
+      
     });
   }, 600);
 });

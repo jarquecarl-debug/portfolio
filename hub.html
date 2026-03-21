@@ -5,15 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Divergence — Carl Christian Jarque</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=optional" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 <style>
-.hub-page{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:48px;position:relative;}
+.hub-page{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:48px;position:relative;z-index:2;}
 .hub-char{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);opacity:0.06;pointer-events:none;width:600px;height:500px;}
-.hub-mode-label{font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:var(--text-dim);letter-spacing:6px;text-transform:uppercase;text-align:center;position:relative;z-index:2;}
+.hub-mode-label{font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:var(--text-dim);letter-spacing:6px;text-transform:uppercase;text-align:center;position:relative;z-index:10;}
 .hub-mode-label::before,.hub-mode-label::after{content:'——';color:var(--gold-dim);margin:0 12px;}
-.hub-cards{display:flex;gap:28px;position:relative;z-index:2;}
+.hub-cards{display:flex;gap:28px;position:relative;z-index:10;}
 .hub-card{width:300px;border:1px solid var(--border);background:rgba(6,9,18,0.8);padding:36px 32px;cursor:pointer;transition:all 0.35s cubic-bezier(0.25,0.46,0.45,0.94);position:relative;overflow:hidden;text-decoration:none;display:block;clip-path:polygon(0 0,calc(100% - 20px) 0,100% 20px,100% 100%,20px 100%,0 calc(100% - 20px));}
 .hub-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,168,76,0.06) 0%,transparent 60%);opacity:0;transition:opacity 0.3s;}
 .hub-card:hover::before{opacity:1;}
@@ -35,6 +35,29 @@
 .hub-hint-item{display:flex;align-items:center;gap:8px;font-family:'Share Tech Mono',monospace;font-size:0.55rem;color:var(--text-dim);letter-spacing:2px;}
 .hub-hint-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);animation:pulse-green 2s infinite;}
 .hub-hint-sep{width:1px;height:16px;background:var(--gold-dim);opacity:0.4;}
+.hub-mode-label, .hub-cards, .hub-card { opacity: 1; }
+
+
+
+
+
+body > *:not(#bg-canvas):not(.scanlines):not(.cursor):not(.cursor-ring) {
+  position: relative;
+  z-index: 2;
+}
+.hub-page, .contact-page, .skills-page, .hobbies-page,
+.projects-page, .certs-page, .about-page, .cards-section,
+.contact-left, .contact-right, .hub-cards, .hub-mode-label,
+.hub-card, .contact-item, .contact-header,
+.skills-char-area, .skills-panel,
+.hobby-frame, .hobbies-header, .frames-gallery,
+.projects-list, .project-detail,
+.certs-grid, .certs-header-row, .certs-footer,
+.photo-section {
+  position: relative;
+  z-index: 20;
+}
+
 </style>
 </head>
 <body>
@@ -65,6 +88,7 @@
   <span class="back-btn-text">BACK</span>
 </a>
 
+<div class="page">
 <div class="hub-page">
   <div class="hub-char">
     <svg viewBox="0 0 600 500" fill="none" style="width:100%;height:100%;">
@@ -115,6 +139,7 @@
     <div class="hub-hint-item"><span>SELECT TO PROCEED</span></div>
   </div>
 </div>
+</div><!-- /.page -->
 
 <div id="admin-modal">
   <div id="admin-terminal">
@@ -128,9 +153,7 @@
 <script src="js/main.js"></script>
 <script>
 window.addEventListener('load', () => {
-  gsap.from('.hub-mode-label', { opacity: 0, y: -20, duration: 0.5, delay: 0.2 });
-  gsap.from('.hub-card', { opacity: 0, y: 40, duration: 0.6, stagger: 0.15, delay: 0.4 });
-  gsap.from('.hub-bottom-hint', { opacity: 0, duration: 0.5, delay: 0.9 });
+  // No GSAP animations — elements visible by default via CSS
 });
 </script>
 </body>

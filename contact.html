@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Get in Touch — Carl Christian Jarque</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=optional" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <link rel="stylesheet" href="css/style.css">
 <style>
 .contact-page {
@@ -28,6 +28,7 @@
   padding: 80px 0 60px 60px;
   gap: 12px;
   position: relative;
+  z-index: 20;
 }
 
 .contact-header { margin-bottom: 16px; }
@@ -270,6 +271,28 @@
   color: var(--text-dim);
   letter-spacing: 3px;
 }
+
+
+
+
+
+body > *:not(#bg-canvas):not(.scanlines):not(.cursor):not(.cursor-ring) {
+  position: relative;
+  z-index: 2;
+}
+.hub-page, .contact-page, .skills-page, .hobbies-page,
+.projects-page, .certs-page, .about-page, .cards-section,
+.contact-left, .contact-right, .hub-cards, .hub-mode-label,
+.hub-card, .contact-item, .contact-header,
+.skills-char-area, .skills-panel,
+.hobby-frame, .hobbies-header, .frames-gallery,
+.projects-list, .project-detail,
+.certs-grid, .certs-header-row, .certs-footer,
+.photo-section {
+  position: relative;
+  z-index: 20;
+}
+
 </style>
 </head>
 <body>
@@ -301,6 +324,7 @@
   <span class="back-btn-text">BACK</span>
 </a>
 
+<div class="page">
 <div class="contact-page">
 
   <!-- LEFT: Contact items -->
@@ -582,10 +606,10 @@ function activateContact(index) {
     wrap.classList.add('visible');
     cubeActive = true;
     drawContactCube();
-    gsap.fromTo(wrap, { scale: 0.5, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.4, ease: 'back.out(1.4)' });
+    
   } else {
     // Already showing — just update content with a flash
-    gsap.fromTo('#cube-data-panel', { opacity: 0.3 }, { opacity: 1, duration: 0.3 });
+    
   }
 
   hint.classList.add('hidden');
@@ -593,11 +617,7 @@ function activateContact(index) {
 }
 
 // Entrance animations
-window.addEventListener('load', () => {
-  gsap.from('.contact-header', { opacity: 0, x: -20, duration: 0.5, delay: 0.2 });
-  gsap.from('.contact-item', { opacity: 0, x: -30, duration: 0.4, stagger: 0.1, delay: 0.3 });
-  gsap.from('.contact-char-wrap', { opacity: 0, x: 30, duration: 0.7, delay: 0.2 });
-});
+
 </script>
 </body>
 </html>

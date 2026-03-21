@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gallery of Possibilities — Carl Christian Jarque</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=optional" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 <style>
 .hobbies-page {
@@ -325,6 +325,28 @@
   font-size: 1.2rem;
   opacity: 0.4;
 }
+
+
+
+
+
+body > *:not(#bg-canvas):not(.scanlines):not(.cursor):not(.cursor-ring) {
+  position: relative;
+  z-index: 2;
+}
+.hub-page, .contact-page, .skills-page, .hobbies-page,
+.projects-page, .certs-page, .about-page, .cards-section,
+.contact-left, .contact-right, .hub-cards, .hub-mode-label,
+.hub-card, .contact-item, .contact-header,
+.skills-char-area, .skills-panel,
+.hobby-frame, .hobbies-header, .frames-gallery,
+.projects-list, .project-detail,
+.certs-grid, .certs-header-row, .certs-footer,
+.photo-section {
+  position: relative;
+  z-index: 20;
+}
+
 </style>
 </head>
 <body>
@@ -357,6 +379,7 @@
 </a>
 
 <!-- MAIN PAGE -->
+<div class="page">
 <div class="hobbies-page">
   <div class="hobbies-header">
     <div class="section-tag">Interests & Passions</div>
@@ -445,6 +468,7 @@
     <div class="gallery-arrow right" onclick="scrollFrames(1)">›</div>
   </div>
 </div>
+</div><!-- /.page -->
 
 <!-- CAROUSEL OVERLAY -->
 <div id="carousel-overlay">
@@ -516,7 +540,7 @@ function openCarousel(index) {
 
   document.getElementById('carousel-title').textContent = hobby.name.toUpperCase();
   overlay.style.display = 'flex';
-  gsap.fromTo(overlay, { opacity: 0 }, { opacity: 1, duration: 0.3 });
+  
 
   renderCarousel();
 }
@@ -573,9 +597,6 @@ function nextImage() {
 }
 
 function closeCarousel() {
-  gsap.to('#carousel-overlay', { opacity: 0, duration: 0.25, onComplete: () => {
-    document.getElementById('carousel-overlay').style.display = 'none';
-  }});
 }
 
 // Keyboard navigation
@@ -589,10 +610,7 @@ document.addEventListener('keydown', e => {
 });
 
 // Entrance animations
-window.addEventListener('load', () => {
-  gsap.from('.hobbies-header', { opacity: 0, y: -20, duration: 0.5, delay: 0.2 });
-  gsap.from('.hobby-frame', { opacity: 0, y: 30, duration: 0.5, stagger: 0.1, delay: 0.4 });
-});
+
 </script>
 </body>
 </html>

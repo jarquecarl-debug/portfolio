@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Certifications — Carl Christian Jarque</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=optional" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 <style>
 .certs-page {
@@ -338,6 +338,28 @@
   color: var(--text-dim);
   letter-spacing: 3px;
 }
+
+
+
+
+
+body > *:not(#bg-canvas):not(.scanlines):not(.cursor):not(.cursor-ring) {
+  position: relative;
+  z-index: 2;
+}
+.hub-page, .contact-page, .skills-page, .hobbies-page,
+.projects-page, .certs-page, .about-page, .cards-section,
+.contact-left, .contact-right, .hub-cards, .hub-mode-label,
+.hub-card, .contact-item, .contact-header,
+.skills-char-area, .skills-panel,
+.hobby-frame, .hobbies-header, .frames-gallery,
+.projects-list, .project-detail,
+.certs-grid, .certs-header-row, .certs-footer,
+.photo-section {
+  position: relative;
+  z-index: 20;
+}
+
 </style>
 </head>
 <body>
@@ -369,6 +391,7 @@
   <span class="back-btn-text">BACK</span>
 </a>
 
+<div class="page">
 <div class="certs-page">
 
   <!-- Header row -->
@@ -414,6 +437,7 @@
   </div>
 
 </div>
+</div><!-- /.page -->
 
 <!-- CERT VIEWER -->
 <div id="cert-viewer" onclick="closeCertViewer()">
@@ -503,7 +527,6 @@ function renderCerts() {
   });
 
   // Entrance animation
-  gsap.from('.cert-card', { opacity: 0, y: 20, duration: 0.4, stagger: 0.08, delay: 0.3 });
 }
 
 function viewCert(title, url) {
@@ -513,13 +536,10 @@ function viewCert(title, url) {
   document.getElementById('cert-viewer-title').textContent = title;
   imgWrap.innerHTML = `<img src="${url}" alt="${title}" style="max-width:100%;max-height:100%;object-fit:contain;">`;
   overlay.style.display = 'flex';
-  gsap.fromTo(overlay, { opacity: 0 }, { opacity: 1, duration: 0.3 });
+  
 }
 
 function closeCertViewer() {
-  gsap.to('#cert-viewer', { opacity: 0, duration: 0.2, onComplete: () => {
-    document.getElementById('cert-viewer').style.display = 'none';
-  }});
 }
 
 document.addEventListener('keydown', e => {
@@ -528,8 +548,6 @@ document.addEventListener('keydown', e => {
 
 window.addEventListener('load', () => {
   renderCerts();
-  gsap.from('.certs-header-row', { opacity: 0, y: -20, duration: 0.5, delay: 0.2 });
-  gsap.from('.certs-footer', { opacity: 0, y: 20, duration: 0.5, delay: 0.4 });
 });
 </script>
 </body>

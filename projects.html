@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Projects — Carl Christian Jarque</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=optional" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 <style>
 .projects-page {
@@ -312,6 +312,28 @@
 }
 .detail-github-btn:hover { border-color: var(--gold); color: var(--gold); }
 .detail-github-btn svg { width: 16px; height: 16px; fill: currentColor; }
+
+
+
+
+
+body > *:not(#bg-canvas):not(.scanlines):not(.cursor):not(.cursor-ring) {
+  position: relative;
+  z-index: 2;
+}
+.hub-page, .contact-page, .skills-page, .hobbies-page,
+.projects-page, .certs-page, .about-page, .cards-section,
+.contact-left, .contact-right, .hub-cards, .hub-mode-label,
+.hub-card, .contact-item, .contact-header,
+.skills-char-area, .skills-panel,
+.hobby-frame, .hobbies-header, .frames-gallery,
+.projects-list, .project-detail,
+.certs-grid, .certs-header-row, .certs-footer,
+.photo-section {
+  position: relative;
+  z-index: 20;
+}
+
 </style>
 </head>
 <body>
@@ -343,6 +365,7 @@
   <span class="back-btn-text">BACK</span>
 </a>
 
+<div class="page">
 <div class="projects-page">
 
   <!-- LEFT: Project list -->
@@ -506,6 +529,7 @@
 
   </div>
 </div>
+</div><!-- /.page -->
 
 <div id="admin-modal">
   <div id="admin-terminal">
@@ -535,7 +559,7 @@ function showProject(index) {
   if (detail) {
     detail.style.display = 'flex';
     detail.classList.add('visible');
-    gsap.fromTo(detail, { opacity: 0, x: 20 }, { opacity: 1, x: 0, duration: 0.4 });
+    
   }
   activeProject = index;
 }
@@ -544,8 +568,6 @@ window.addEventListener('load', () => {
   // Show first project detail
   showProject(0);
   // Entrance animations
-  gsap.from('.projects-list-header', { opacity: 0, x: -20, duration: 0.5, delay: 0.2 });
-  gsap.from('.project-card', { opacity: 0, x: -20, duration: 0.4, stagger: 0.1, delay: 0.3 });
 });
 </script>
 </body>
