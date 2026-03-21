@@ -287,7 +287,8 @@ function attemptAdminLogin() {
 }
 
 function openAdminPanel() {
-  window.location.href = 'admin.html';
+  // Phase 3 — Full admin panel
+  alert('Admin Panel — Coming in Phase 3!');
 }
 
 // ============================================
