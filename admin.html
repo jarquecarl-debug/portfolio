@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin CMS — Carl's Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 <style>
 /* ============================================
@@ -20,8 +22,6 @@ body { overflow: auto; cursor: default; }
   display: flex;
   position: relative;
   z-index: 10;
-  opacity: 0;
-  transition: opacity 0.4s ease;
 }
 
 /* SIDEBAR */
@@ -1121,10 +1121,6 @@ window.saveContact = async function() {
 // Load profile on start
 loadProfile();
 renderAboutForm();
-window.addEventListener('load', () => {
-  const wrap = document.querySelector('.admin-wrap');
-  if (wrap) wrap.style.opacity = '1';
-});
 </script>
 </body>
 </html>
