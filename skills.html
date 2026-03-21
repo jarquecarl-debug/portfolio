@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abilities — Carl Christian Jarque</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<link rel="stylesheet" href="css/style.css">
+<style>
+.skills-page {
+  width: 100%; height: 100%;
+  display: flex;
+  align-items: stretch;
+  position: relative;
+}
+
+/* LEFT: Character */
+.skills-char-area {
+  flex: 0 0 38%;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 0;
+}
+.skills-char-glow {
+  position: absolute;
+  bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 280px; height: 500px;
+  background: radial-gradient(ellipse at 50% 80%, rgba(201,168,76,0.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* RIGHT: Skills panel */
+.skills-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 80px 60px 60px 40px;
+  overflow-y: auto;
+  gap: 28px;
+  position: relative;
+}
+.skills-panel::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0;
+  width: 2px; height: 100%;
+  background: linear-gradient(to bottom, transparent, var(--gold-dim) 20%, var(--gold) 50%, var(--gold-dim) 80%, transparent);
+}
+
+/* Section header */
+.skills-header {
+  margin-bottom: 4px;
+}
+.skills-category {
+  margin-bottom: 20px;
+}
+.skills-cat-title {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.6rem;
+  color: var(--cyan);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.skills-cat-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, var(--cyan-dim), transparent);
+  opacity: 0.5;
+}
+
+/* TECHNICAL SKILLS — progress bars */
+.skill-bar-item {
+  margin-bottom: 14px;
+}
+.skill-bar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.skill-bar-name {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--blue-white);
+  letter-spacing: 1px;
+}
+.skill-bar-tag {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.55rem;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+  padding: 2px 8px;
+  border: 1px solid var(--border);
+}
+.skill-bar-track {
+  width: 100%;
+  height: 4px;
+  background: rgba(255,255,255,0.06);
+  position: relative;
+  overflow: hidden;
+}
+.skill-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--gold-dim), var(--gold), var(--gold-light));
+  position: relative;
+  transition: width 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  box-shadow: 0 0 8px rgba(201,168,76,0.4);
+}
+.skill-bar-fill::after {
+  content: '';
+  position: absolute;
+  right: 0; top: -2px;
+  width: 8px; height: 8px;
+  background: var(--gold-light);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--gold);
+}
+
+/* SOFT SKILLS — chip tags */
+.soft-skills-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.soft-skill-chip {
+  padding: 8px 16px;
+  border: 1px solid var(--border);
+  background: rgba(201,168,76,0.04);
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--blue-white);
+  letter-spacing: 1px;
+  clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+  transition: all 0.25s;
+  cursor: default;
+}
+.soft-skill-chip:hover {
+  border-color: var(--gold);
+  background: rgba(201,168,76,0.1);
+  color: var(--gold-light);
+}
+
+/* TECH TAGS grid */
+.tech-tags-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.tech-tag {
+  padding: 6px 14px;
+  border: 1px solid rgba(0,217,255,0.2);
+  background: rgba(0,217,255,0.04);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.6rem;
+  color: var(--cyan);
+  letter-spacing: 2px;
+  transition: all 0.25s;
+  cursor: default;
+}
+.tech-tag:hover {
+  border-color: var(--cyan);
+  background: rgba(0,217,255,0.1);
+  box-shadow: 0 0 10px rgba(0,217,255,0.15);
+}
+
+/* Divider */
+.skills-divider {
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--border), transparent);
+  margin: 4px 0;
+}
+</style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursor-ring"></div>
+<div class="scanlines"></div>
+<div class="corner-deco tl"><svg viewBox="0 0 40 40" fill="none" stroke="#c9a84c" stroke-width="1.5"><path d="M0 20 L0 0 L20 0"/><path d="M8 20 L8 8 L20 8"/></svg></div>
+<div class="corner-deco tr"><svg viewBox="0 0 40 40" fill="none" stroke="#c9a84c" stroke-width="1.5"><path d="M0 20 L0 0 L20 0"/><path d="M8 20 L8 8 L20 8"/></svg></div>
+<div class="corner-deco bl"><svg viewBox="0 0 40 40" fill="none" stroke="#c9a84c" stroke-width="1.5"><path d="M0 20 L0 0 L20 0"/><path d="M8 20 L8 8 L20 8"/></svg></div>
+<div class="corner-deco br"><svg viewBox="0 0 40 40" fill="none" stroke="#c9a84c" stroke-width="1.5"><path d="M0 20 L0 0 L20 0"/><path d="M8 20 L8 8 L20 8"/></svg></div>
+<canvas id="bg-canvas"></canvas>
+
+<div class="nav-breadcrumb">
+  <div class="nav-logo" onclick="openAdminModal()"><svg viewBox="0 0 24 24"><path d="M12 2L22 8.5V15.5L12 22L2 15.5V8.5L12 2Z"/></svg></div>
+  <span class="nav-section-name">Abilities</span>
+</div>
+<nav class="floating-nav">
+  <a href="index.html" class="nav-item"><span class="nav-item-label">HOME</span><div class="nav-dot"></div></a>
+  <a href="about.html" class="nav-item"><span class="nav-item-label">WHO AM I</span><div class="nav-dot"></div></a>
+  <a href="hobbies.html" class="nav-item"><span class="nav-item-label">HOBBIES</span><div class="nav-dot"></div></a>
+  <a href="hub.html" class="nav-item"><span class="nav-item-label">EXPLORE</span><div class="nav-dot"></div></a>
+  <a href="skills.html" class="nav-item active"><span class="nav-item-label">ABILITIES</span><div class="nav-dot"></div></a>
+  <a href="certifications.html" class="nav-item"><span class="nav-item-label">CERTS</span><div class="nav-dot"></div></a>
+  <a href="projects.html" class="nav-item"><span class="nav-item-label">PROJECTS</span><div class="nav-dot"></div></a>
+  <a href="contact.html" class="nav-item"><span class="nav-item-label">CONTACT</span><div class="nav-dot"></div></a>
+</nav>
+<a href="hub.html" class="back-btn">
+  <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+  <span class="back-btn-text">BACK</span>
+</a>
+
+<div class="skills-page">
+
+  <!-- CHARACTER -->
+  <div class="skills-char-area">
+    <div class="skills-char-glow"></div>
+    <svg viewBox="0 0 400 700" fill="none" xmlns="http://www.w3.org/2000/svg"
+      style="width:380px;height:680px;filter:drop-shadow(0 0 16px rgba(201,168,76,0.12))">
+      <defs>
+        <linearGradient id="sCoatGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#1a1e2e"/><stop offset="100%" stop-color="#0d1020"/></linearGradient>
+        <linearGradient id="sGoldEdge" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#c9a84c" stop-opacity="0.8"/><stop offset="50%" stop-color="#f0c96e" stop-opacity="0.6"/><stop offset="100%" stop-color="#c9a84c" stop-opacity="0.8"/></linearGradient>
+        <radialGradient id="sBodyGlow" cx="50%" cy="40%" r="50%"><stop offset="0%" stop-color="#c9a84c" stop-opacity="0.1"/><stop offset="100%" stop-color="#c9a84c" stop-opacity="0"/></radialGradient>
+      </defs>
+      <!-- Ground glow -->
+      <ellipse cx="200" cy="690" rx="100" ry="14" fill="rgba(201,168,76,0.12)" opacity="0.6"/>
+      <!-- CONTEMPLATIVE POSE: looking down at hand/arm -->
+      <!-- Body -->
+      <path d="M145 238 C125 278 110 338 105 418 C100 478 97 538 93 618 C93 628 95 638 100 643 C115 648 135 646 150 643 L153 578 L157 518 L200 518 L243 518 L247 578 L250 643 C265 646 285 648 300 643 C305 638 307 628 307 618 C303 538 300 478 295 418 C290 338 275 278 255 238 Z" fill="url(#sCoatGrad)"/>
+      <!-- Gold trim -->
+      <path d="M145 238 L135 318 L115 418 L105 518 L93 618" stroke="url(#sGoldEdge)" stroke-width="1.5" fill="none" opacity="0.5"/>
+      <path d="M255 238 L265 318 L285 418 L295 518 L307 618" stroke="url(#sGoldEdge)" stroke-width="1.5" fill="none" opacity="0.5"/>
+      <!-- Inner shirt -->
+      <path d="M183 253 L185 318 L200 328 L215 318 L217 253" fill="#0a1520" opacity="0.8"/>
+      <path d="M188 268 L188 308 M195 263 L195 313 M202 261 L202 316 M209 263 L209 313 M216 268 L216 308" stroke="#00d9ff" stroke-width="0.4" opacity="0.3"/>
+      <!-- LEFT ARM: bent down, looking at forearm/hand -->
+      <path d="M113 268 C100 285 92 310 90 345 C88 368 90 385 96 395 C102 405 112 408 120 404 C130 400 136 388 138 372 C142 348 142 320 143 295 C144 278 145 262 145 250 Z" fill="#141828"/>
+      <path d="M90 295 C86 320 84 348 86 372 C88 390 94 404 100 410" stroke="#c9a84c" stroke-width="0.8" fill="none" opacity="0.35"/>
+      <!-- Left hand (holding/examining) -->
+      <path d="M96 395 C90 408 88 422 92 430 C96 436 104 437 110 432 C116 427 118 414 116 402 Z" fill="#1a1e2e" stroke="#c9a84c" stroke-width="0.8" stroke-opacity="0.4"/>
+      <!-- RIGHT ARM: slightly raised, relaxed -->
+      <path d="M287 268 C300 288 310 315 313 360 C315 385 313 405 308 418 C304 428 296 432 288 429 C280 426 275 416 273 402 C271 382 273 358 272 335 C271 310 267 285 263 268 Z" fill="#141828"/>
+      <path d="M313 295 C316 320 317 348 315 372 C313 390 308 406 302 414" stroke="#c9a84c" stroke-width="0.8" fill="none" opacity="0.35"/>
+      <!-- Right hand -->
+      <path d="M308 418 C312 428 313 440 310 447 C307 452 300 453 295 448 C290 443 289 432 291 422 Z" fill="#1a1e2e" stroke="#c9a84c" stroke-width="0.8" stroke-opacity="0.4"/>
+      <!-- Neck -->
+      <rect x="188" y="190" width="24" height="50" rx="4" fill="#141828"/>
+      <!-- HOOD: tilted slightly down (contemplating) -->
+      <path d="M150 195 C143 180 140 158 143 130 C146 100 159 76 178 62 C186 56 193 54 200 54 C207 54 214 56 222 62 C241 76 254 100 257 130 C260 158 257 180 250 195 C243 210 233 224 228 236 C218 238 200 240 172 238 C168 226 157 210 150 195 Z" fill="#0f1322" stroke="#c9a84c" stroke-width="0.8" stroke-opacity="0.4"/>
+      <!-- Hood shadow -->
+      <path d="M150 195 C143 178 140 155 143 128 C146 97 160 73 179 59" stroke="#c9a84c" stroke-width="1.2" fill="none" opacity="0.4"/>
+      <path d="M250 195 C257 178 260 155 257 128 C254 97 240 73 221 59" stroke="#c9a84c" stroke-width="1.2" fill="none" opacity="0.4"/>
+      <!-- Face shadow -->
+      <ellipse cx="200" cy="142" rx="34" ry="40" fill="#050810" opacity="0.95"/>
+      <!-- Eye glow — looking downward -->
+      <ellipse cx="190" cy="148" rx="4" ry="1.5" fill="#c9a84c" opacity="0.2">
+        <animate attributeName="opacity" values="0.1;0.3;0.1" dur="3s" repeatCount="indefinite"/>
+      </ellipse>
+      <ellipse cx="210" cy="148" rx="4" ry="1.5" fill="#c9a84c" opacity="0.2">
+        <animate attributeName="opacity" values="0.1;0.3;0.1" dur="3s" repeatCount="indefinite"/>
+      </ellipse>
+      <!-- Belt -->
+      <rect x="178" y="368" width="44" height="16" rx="2" fill="#161a28" stroke="#c9a84c" stroke-width="0.8" stroke-opacity="0.5"/>
+      <!-- Coat bottom -->
+      <path d="M105 518 C100 568 95 608 93 638 C105 643 125 644 143 641 L147 558 L153 518 Z" fill="#0d1020"/>
+      <path d="M295 518 C300 568 305 608 307 638 C295 643 275 644 257 641 L253 558 L247 518 Z" fill="#0d1020"/>
+      <!-- Legs -->
+      <rect x="160" y="518" width="36" height="118" rx="4" fill="#111520"/>
+      <rect x="204" y="518" width="36" height="118" rx="4" fill="#111520"/>
+      <!-- Boots -->
+      <path d="M158 632 L158 655 C158 662 162 667 168 669 L194 669 L196 632 Z" fill="#0d1020" stroke="#c9a84c" stroke-width="0.8" stroke-opacity="0.4"/>
+      <path d="M202 632 L204 669 L232 669 C238 667 242 662 242 655 L242 632 Z" fill="#0d1020" stroke="#c9a84c" stroke-width="0.8" stroke-opacity="0.4"/>
+      <!-- Floating data particles around hand (ability scan effect) -->
+      <circle cx="75" cy="390" r="2" fill="#00d9ff" opacity="0.6">
+        <animate attributeName="cx" values="75;65;80;70;75" dur="4s" repeatCount="indefinite"/>
+        <animate attributeName="cy" values="390;375;385;400;390" dur="4s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.3;0.8;0.4;0.7;0.3" dur="4s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="55" cy="410" r="1.5" fill="#c9a84c" opacity="0.5">
+        <animate attributeName="cx" values="55;68;52;60;55" dur="3s" repeatCount="indefinite"/>
+        <animate attributeName="cy" values="410;398;422;405;410" dur="3s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="85" cy="420" r="1" fill="#00d9ff" opacity="0.4">
+        <animate attributeName="cy" values="420;405;420" dur="2.5s" repeatCount="indefinite"/>
+      </circle>
+      <line x1="75" y1="390" x2="55" y2="410" stroke="#00d9ff" stroke-width="0.4" opacity="0.2">
+        <animate attributeName="opacity" values="0.1;0.4;0.1" dur="2s" repeatCount="indefinite"/>
+      </line>
+      <line x1="55" y1="410" x2="85" y2="420" stroke="#c9a84c" stroke-width="0.4" opacity="0.15">
+        <animate attributeName="opacity" values="0.05;0.3;0.05" dur="2.5s" repeatCount="indefinite"/>
+      </line>
+      <!-- Body glow -->
+      <rect x="50" y="50" width="300" height="620" fill="url(#sBodyGlow)" opacity="0.4"/>
+    </svg>
+  </div>
+
+  <!-- SKILLS PANEL -->
+  <div class="skills-panel">
+    <div class="skills-header">
+      <div class="section-tag">Capability Matrix</div>
+      <h1 class="section-title" style="margin-bottom:0;">Abilities</h1>
+    </div>
+
+    <div class="skills-divider"></div>
+
+    <!-- TECHNICAL SKILLS -->
+    <div class="skills-category">
+      <div class="skills-cat-title">Frontend Development</div>
+      <div class="skill-bar-item">
+        <div class="skill-bar-header">
+          <span class="skill-bar-name">React</span>
+          <span class="skill-bar-tag">FRAMEWORK</span>
+        </div>
+        <div class="skill-bar-track"><div class="skill-bar-fill" data-width="75"></div></div>
+      </div>
+      <div class="skill-bar-item">
+        <div class="skill-bar-header">
+          <span class="skill-bar-name">HTML / CSS</span>
+          <span class="skill-bar-tag">MARKUP</span>
+        </div>
+        <div class="skill-bar-track"><div class="skill-bar-fill" data-width="88"></div></div>
+      </div>
+      <div class="skill-bar-item">
+        <div class="skill-bar-header">
+          <span class="skill-bar-name">JavaScript</span>
+          <span class="skill-bar-tag">LANGUAGE</span>
+        </div>
+        <div class="skill-bar-track"><div class="skill-bar-fill" data-width="80"></div></div>
+      </div>
+    </div>
+
+    <div class="skills-category">
+      <div class="skills-cat-title">Programming Languages</div>
+      <div class="skill-bar-item">
+        <div class="skill-bar-header">
+          <span class="skill-bar-name">Python</span>
+          <span class="skill-bar-tag">SCRIPTING</span>
+        </div>
+        <div class="skill-bar-track"><div class="skill-bar-fill" data-width="70"></div></div>
+      </div>
+      <div class="skill-bar-item">
+        <div class="skill-bar-header">
+          <span class="skill-bar-name">Java</span>
+          <span class="skill-bar-tag">OOP</span>
+        </div>
+        <div class="skill-bar-track"><div class="skill-bar-fill" data-width="65"></div></div>
+      </div>
+      <div class="skill-bar-item">
+        <div class="skill-bar-header">
+          <span class="skill-bar-name">C#</span>
+          <span class="skill-bar-tag">OOP</span>
+        </div>
+        <div class="skill-bar-track"><div class="skill-bar-fill" data-width="60"></div></div>
+      </div>
+    </div>
+
+    <div class="skills-category">
+      <div class="skills-cat-title">Web Technologies</div>
+      <div class="tech-tags-wrap">
+        <div class="tech-tag">RESPONSIVE DESIGN</div>
+        <div class="tech-tag">UI/UX IMPLEMENTATION</div>
+        <div class="tech-tag">FIREBASE</div>
+        <div class="tech-tag">REST APIs</div>
+        <div class="tech-tag">GIT / GITHUB</div>
+        <div class="tech-tag">PROMPT ENGINEERING</div>
+      </div>
+    </div>
+
+    <div class="skills-divider"></div>
+
+    <!-- SOFT SKILLS -->
+    <div class="skills-category">
+      <div class="skills-cat-title">Soft Skills</div>
+      <div class="soft-skills-wrap">
+        <div class="soft-skill-chip">ADAPTABILITY</div>
+        <div class="soft-skill-chip">TEAMWORK</div>
+        <div class="soft-skill-chip">COMMUNICATION</div>
+        <div class="soft-skill-chip">VOICE IMPRESSION</div>
+        <div class="soft-skill-chip">PROBLEM SOLVING</div>
+        <div class="soft-skill-chip">CREATIVE THINKING</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="admin-modal">
+  <div id="admin-terminal">
+    <div class="terminal-dots"><div class="terminal-dot red"></div><div class="terminal-dot amber"></div><div class="terminal-dot green"></div><span class="terminal-label">ADMIN TERMINAL v1.0</span></div>
+    <div id="admin-terminal-log"></div>
+    <div class="terminal-input-row"><span class="terminal-prompt">PASS://</span><input type="password" id="admin-password-input" placeholder="enter access key..." onkeydown="handleAdminKey(event)"></div>
+    <div class="terminal-buttons"><button class="terminal-btn" onclick="attemptAdminLogin()">AUTHENTICATE</button><button class="terminal-btn close" onclick="closeAdminModal()">✕</button></div>
+  </div>
+</div>
+
+<script src="js/main.js"></script>
+<script>
+window.addEventListener('load', () => {
+  // Entrance animations
+  gsap.from('.skills-char-area', { opacity: 0, x: -30, duration: 0.7, delay: 0.2 });
+  gsap.from('.skills-header', { opacity: 0, y: -20, duration: 0.5, delay: 0.3 });
+  gsap.from('.skills-category', { opacity: 0, x: 30, duration: 0.5, stagger: 0.12, delay: 0.5 });
+
+  // Animate skill bars on load
+  setTimeout(() => {
+    document.querySelectorAll('.skill-bar-fill').forEach(bar => {
+      const target = bar.getAttribute('data-width');
+      gsap.to(bar, { width: target + '%', duration: 1.2, ease: 'power2.out', delay: Math.random() * 0.3 });
+    });
+  }, 600);
+});
+</script>
+</body>
+</html>
